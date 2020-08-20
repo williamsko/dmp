@@ -8,14 +8,14 @@ import (
 // Usager : regroupe l'ensemble des usagers de la plateforme
 type Usager struct {
 	ID             primitive.ObjectID `bson:"_id,omitempty"`
-	Matricule      string             `bson:"matricule,omitempty"`
-	FirstName      string             `bson:"first_name,omitempty"`
-	LastName       string             `bson:"last_name,omitempty"`
-	Address        string             `bson:"address,omitempty"`
-	PhoneNumber    string             `bson:"phone_number,omitempty"`
-	IdentityNumber string             `bson:"identity_number,omitempty"`
-	TypeDocument   string             `bson:"typedocument,omitempty"`
-	CreatedAt      time.Time          `json:"created_at" bson:"created_at"`
+	Matricule      string             `json:"matricule,omitempty" unique:"true"`
+	FirstName      string             `json:"first_name,omitempty" binding:"required"`
+	LastName       string             `json:"last_name,omitempty"`
+	Address        string             `json:"address,omitempty"`
+	PhoneNumber    string             `json:"phone_number,omitempty"`
+	IdentityNumber string             `json:"identity_number,omitempty"`
+	TypeDocument   string             `json:"typedocument,omitempty"`
+	CreatedAt      time.Time          `json:"created_at" bson:"created_at" time_format:"2006-01-02"`
 }
 
 // TypeDocument : Liste des types de documents
