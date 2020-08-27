@@ -29,36 +29,16 @@ type ContenuDossier struct {
 
 // Antecedent : Antecedent
 type Antecedent struct {
-	ID             primitive.ObjectID `bson:"_id,omitempty"`
-	Dossier        primitive.ObjectID `bson:"dossier,omitempty"`
-	Agent          primitive.ObjectID `bson:"agent,omitempty"`
-	Entity         primitive.ObjectID `bson:"entity,omitempty"`
-	TypeAntecedent TypeAntecedent     `bson:"type_antecedent,omitempty"`
-	Detail         string             `bson:"content_type,omitempty"`
-	CreatedAt      time.Time          `json:"created_at" bson:"created_at"`
+	ID                    primitive.ObjectID `bson:"_id,omitempty"`
+	Dossier               primitive.ObjectID `bson:"dossier,omitempty"`
+	Agent                 primitive.ObjectID `bson:"agent,omitempty"`
+	Entity                primitive.ObjectID `bson:"entity,omitempty"`
+	AntecedentMedical     string             `bson:"antecedent_medical,omitempty"`
+	AntecedentChirurgical string             `bson:"antecedent_chirurgical,omitempty"`
+	AntecedentFamilial    string             `bson:"antecedent_familial,omitempty"`
+	ModeDeVie             string             `bson:"mode_de_vie,omitempty"`
+	CreatedAt             time.Time          `json:"created_at" bson:"created_at"`
 }
-
-// TypeExamen : Liste examens médicaux
-type TypeExamen struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	Code      string             `bson:"content_type,omitempty"`
-	Detail    string             `bson:"content_type,omitempty"`
-	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
-}
-
-//Type Antecedent
-type TypeAntecedent struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	Tpy       string             `bson:"type,omitempty"`
-	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
-}
-
-const (
-	AntecedentMedical     = "Antecedent médical"
-	AntecedentFamilial    = "Antecedent familial"
-	AntecedentChirurgical = "Antecedent chirurgical"
-	ModeDeVie             = "Mod de vie"
-)
 
 //DossierContentType
 const (
