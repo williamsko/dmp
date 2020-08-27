@@ -1,9 +1,19 @@
-package usager
+package entity
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
+
+// AgentPayloadValidator : use to validate agent payload in all models
+type AgentPayloadValidator struct {
+	Matricule string `bson:"matricule,omitempty" binding:"required"`
+}
+
+// EntityPayloadValidator : use to validate entity payload in all models
+type EntityPayloadValidator struct {
+	Matricule string `bson:"matricule,omitempty" binding:"required"`
+}
 
 // Entity : Hospital for example
 type Entity struct {

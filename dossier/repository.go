@@ -1,55 +1,46 @@
-package usager
+package dossier
 
 import (
 	"context"
 	"dmp/db"
+	"dmp/entity"
+	"dmp/usager"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
+	"dmp/utils"
 	"time"
 )
 
-// IUsager : Interface de fonctions sur objet Usager
-type IUsager interface {
-	CreateNewUsager(usager *Usager) interface{}
-	FindUsagerByPhoneNumber(phoneNumber string) Usager
-}
-
-// FindUsagerByPhoneNumber : Find usager
-func FindUsagerByPhoneNumber(phoneNumber string) Usager {
+// FindDossierByUsagerID : Find usager dossier
+func FindDossierByUsagerID(_id primitive.ObjectID) (Dossier, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	usager := Usager{}
+	dossier := Dossier{}
 
-	usagerCollection := db.ConnectDb().Collection("usager")
-	result := usagerCollection.FindOne(ctx, bson.M{"phone_number": phoneNumber}).Decode(&usager)
-
-	if result != nil {
-		panic(result)
-	}
-
-	return usager
+	dossierCollection := db.ConnectDb().Collection("dossier")
+	err := dossierCollection.FindOne(ctx, bson.M{"usager": _id}).Decode(&dossier)
+	fmt.Println(err)
+	return dossier, err
 }
 
-// CreateNewUsager : create a new usager
-func CreateNewUsager(usager *Usager) interface{} {
-
+// CreateEmptyDossier : create a new usager
+func CreateEmptyDossier(usager usager.Usager, agent entity.Agent) (*Dossier, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	if usager.CreatedAt.IsZero() {
-		usager.CreatedAt = time.Now()
+	dossierCollection := db.ConnectDb().Collection("dossier")
+	numberDossier := utils.RandomObjectMatricule(10)
+
+	dossier := &Dossier{
+		Usager: usager.ID,
+		Agent:  agent.ID,
+		Entity: agent.Entity,
+		Number: numberDossier,
 	}
-
-	usagerCollection := db.ConnectDb().Collection("usager")
-	result, err := usagerCollection.InsertOne(ctx, usager)
-
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Nouvel usager crééé : ", usager.ID)
-
-	return result.InsertedID
+	_, err := dossierCollection.InsertOne(ctx, dossier)
+	return dossier, err
 }

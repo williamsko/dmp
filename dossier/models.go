@@ -1,4 +1,4 @@
-package usager
+package dossier
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -11,7 +11,7 @@ type Dossier struct {
 	Usager     primitive.ObjectID `bson:"usager,omitempty"`
 	Number     string             `bson:"matricule,omitempty"`
 	CreatedAt  time.Time          `json:"created_at" bson:"created_at"`
-	LastAccess time.Time          `json:"created_at" bson:"created_at"`
+	LastAccess time.Time          `json:"last_access" bson:"last_access"`
 	Agent      primitive.ObjectID `bson:"agent,omitempty"`  //Agent who created the DMP
 	Entity     primitive.ObjectID `bson:"entity,omitempty"` //In which entity the DMP is created
 }
@@ -19,7 +19,7 @@ type Dossier struct {
 // ContenuDossier : DMP Content
 type ContenuDossier struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty"`
-	Dossier     primitive.ObjectID `bson:"dossier,omitempty"`
+	Dossier     Dossier            `bson:"dossier,omitempty"`
 	Agent       primitive.ObjectID `bson:"agent,omitempty"`
 	Entity      primitive.ObjectID `bson:"entity,omitempty"`
 	Content     string             `bson:"content,omitempty"`
@@ -33,7 +33,7 @@ type Antecedent struct {
 	Dossier        primitive.ObjectID `bson:"dossier,omitempty"`
 	Agent          primitive.ObjectID `bson:"agent,omitempty"`
 	Entity         primitive.ObjectID `bson:"entity,omitempty"`
-	TypeAntecedent string             `bson:"content_type,omitempty"`
+	TypeAntecedent TypeAntecedent     `bson:"type_antecedent,omitempty"`
 	Detail         string             `bson:"content_type,omitempty"`
 	CreatedAt      time.Time          `json:"created_at" bson:"created_at"`
 }
@@ -47,6 +47,12 @@ type TypeExamen struct {
 }
 
 //Type Antecedent
+type TypeAntecedent struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty"`
+	Tpy       string             `bson:"type,omitempty"`
+	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
+}
+
 const (
 	AntecedentMedical     = "Antecedent médical"
 	AntecedentFamilial    = "Antecedent familial"
