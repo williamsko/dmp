@@ -23,7 +23,6 @@ func FindDossierByUsagerID(_id primitive.ObjectID) (Dossier, error) {
 
 	dossierCollection := db.ConnectDb().Collection("dossier")
 	err := dossierCollection.FindOne(ctx, bson.M{"usager": _id}).Decode(&dossier)
-	fmt.Println(err)
 	return dossier, err
 }
 
@@ -43,4 +42,26 @@ func CreateEmptyDossier(usager usager.Usager, agent entity.Agent) (*Dossier, err
 	}
 	_, err := dossierCollection.InsertOne(ctx, dossier)
 	return dossier, err
+}
+
+// AddContenuAntecedentUsagerToDossier :  add antecedent to dosser usager
+func AddContenuAntecedentUsagerToDossier(dossier Dossier, antecedentPayload NewAntecedentPayload, agent entity.Agent) (*Antecedent, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	antecedentCollection := db.ConnectDb().Collection("antecedent")
+
+	antecedent := &Antecedent{
+		Agent:                 agent.ID,
+		Entity:                agent.Entity,
+		Dossier:               dossier.ID,
+		AntecedentMedical:     antecedentPayload.AntecedentMedical,
+		AntecedentChirurgical: antecedentPayload.AntecedentChirurgical,
+		AntecedentFamilial:    antecedentPayload.AntecedentFamilial,
+		ModeDeVie:             antecedentPayload.ModeDeVie,
+	}
+	_, err := antecedentCollection.InsertOne(ctx, antecedent)
+	fmt.Println(err)
+	return antecedent, err
+
 }
