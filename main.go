@@ -22,6 +22,9 @@ func initRoutes() {
 		v1.POST("/", usager.PostUsagerAPI)
 		v1.POST("/dossier", dossier.PostDossierAPI)
 		v1.POST("/dossier/antecedent", dossier.PostAntecedentAPI)
+		v1.POST("/dossier/consultation", dossier.PostConsultationAPI)
+		v1.POST("/dossier/hospitalisation", dossier.PostHospitalisationAPI)
+		v1.POST("/dossier/examen", dossier.PostExamenAPI)
 
 		// v1.GET("/", fetchAllTodo)
 		// v1.GET("/:id", fetchSingleTodo)

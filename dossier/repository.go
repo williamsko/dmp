@@ -45,7 +45,7 @@ func CreateEmptyDossier(usager usager.Usager, agent entity.Agent) (*Dossier, err
 }
 
 // AddContenuAntecedentUsagerToDossier :  add antecedent to dosser usager
-func AddContenuAntecedentUsagerToDossier(dossier Dossier, antecedentPayload NewAntecedentPayload, agent entity.Agent) (*Antecedent, error) {
+func AddContenuAntecedentUsagerToDossier(dossier Dossier, antecedentPayload NewAntecedentPayloadValidator, agent entity.Agent) (*Antecedent, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -63,5 +63,63 @@ func AddContenuAntecedentUsagerToDossier(dossier Dossier, antecedentPayload NewA
 	_, err := antecedentCollection.InsertOne(ctx, antecedent)
 	fmt.Println(err)
 	return antecedent, err
+
+}
+
+// AddContenuConsultationUsagerToDossier :  add consultation to dosser usager
+func AddContenuConsultationUsagerToDossier(dossier Dossier, consultationPayload NewConsultationPayloadValidator, agent entity.Agent) (*Consultation, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	consultationCollection := db.ConnectDb().Collection("consultation")
+
+	consultation := &Consultation{
+		Agent:             agent.ID,
+		Entity:            agent.Entity,
+		Dossier:           dossier.ID,
+		HistoireMaladie:   consultationPayload.HistoireMaladie,
+		MotifConsultation: consultationPayload.MotifConsultation,
+		Commentaire:       consultationPayload.Commentaire,
+	}
+	_, err := consultationCollection.InsertOne(ctx, consultation)
+	return consultation, err
+
+}
+
+// AddContenuHospitalisationUsagerToDossier :  add consultation to dosser usager
+func AddContenuHospitalisationUsagerToDossier(dossier Dossier, hospitalisationPayload NewHostpitalisationPayloadValidator, agent entity.Agent) (*Hospitalisation, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	hospitalisationCollection := db.ConnectDb().Collection("hospitalisation")
+
+	hospitalisation := &Hospitalisation{
+		Agent:                agent.ID,
+		Entity:               agent.Entity,
+		Dossier:              dossier.ID,
+		MotifHospitalisation: hospitalisationPayload.MotifHospitalisation,
+		Commentaire:          hospitalisationPayload.Commentaire,
+	}
+	_, err := hospitalisationCollection.InsertOne(ctx, hospitalisation)
+	return hospitalisation, err
+
+}
+
+// AddContenuExamenUsagerToDossier :  add consultation to dosser usager
+func AddContenuExamenUsagerToDossier(dossier Dossier, examenPayload NewExamenValidator, agent entity.Agent) (*Examen, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	examenCollection := db.ConnectDb().Collection("examen")
+
+	examen := &Examen{
+		Agent:   agent.ID,
+		Entity:  agent.Entity,
+		Dossier: dossier.ID,
+		Type:    examenPayload.Type,
+		Content: examenPayload.Content,
+	}
+	_, err := examenCollection.InsertOne(ctx, examen)
+	return examen, err
 
 }

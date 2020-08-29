@@ -16,15 +16,15 @@ type Dossier struct {
 	Entity     primitive.ObjectID `bson:"entity,omitempty"` //In which entity the DMP is created
 }
 
-// ContenuDossier : DMP Content
-type ContenuDossier struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty"`
-	Dossier     Dossier            `bson:"dossier,omitempty"`
-	Agent       primitive.ObjectID `bson:"agent,omitempty"`
-	Entity      primitive.ObjectID `bson:"entity,omitempty"`
-	Content     string             `bson:"content,omitempty"`
-	ContentType string             `bson:"content_type,omitempty"`
-	CreatedAt   time.Time          `json:"created_at" bson:"created_at"`
+// Examen : DMP Content
+type Examen struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty"`
+	Dossier   primitive.ObjectID `bson:"dossier,omitempty"`
+	Agent     primitive.ObjectID `bson:"agent,omitempty"`
+	Entity    primitive.ObjectID `bson:"entity,omitempty"`
+	Content   []ExamenContent    `bson:"content,omitempty"`
+	Type      string             `bson:"examen_type,omitempty"`
+	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
 }
 
 // Antecedent : Antecedent
@@ -38,6 +38,37 @@ type Antecedent struct {
 	AntecedentFamilial    string             `bson:"antecedent_familial,omitempty"`
 	ModeDeVie             string             `bson:"mode_de_vie,omitempty"`
 	CreatedAt             time.Time          `json:"created_at" bson:"created_at"`
+}
+
+// Consultation : all consultations model
+type Consultation struct {
+	ID                primitive.ObjectID `bson:"_id,omitempty"`
+	Dossier           primitive.ObjectID `bson:"dossier,omitempty"`
+	Agent             primitive.ObjectID `bson:"agent,omitempty"`
+	Entity            primitive.ObjectID `bson:"entity,omitempty"`
+	MotifConsultation string             `bson:"motif_consultation,omitempty"`
+	HistoireMaladie   string             `bson:"histoire_maladie,omitempty"`
+	Commentaire       string             `bson:"commentaire,omitempty"`
+	CreatedAt         time.Time          `json:"created_at" bson:"created_at"`
+}
+
+// Hospitalisation : all Hospitalisation model
+type Hospitalisation struct {
+	ID                   primitive.ObjectID `bson:"_id,omitempty"`
+	Dossier              primitive.ObjectID `bson:"dossier,omitempty"`
+	Agent                primitive.ObjectID `bson:"agent,omitempty"`
+	Entity               primitive.ObjectID `bson:"entity,omitempty"`
+	MotifHospitalisation string             `bson:"motif_hospitalisation,omitempty"`
+	Commentaire          string             `bson:"commentaire,omitempty"`
+	CreatedAt            time.Time          `json:"created_at" bson:"created_at"`
+}
+
+// ExamenContent : Examen content
+type ExamenContent struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty"`
+	Name      string             `bson:"name,omitempty"`
+	Value     string             `bson:"value,omitempty"`
+	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
 }
 
 //DossierContentType
