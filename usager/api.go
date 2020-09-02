@@ -5,25 +5,37 @@ import (
 	"net/http"
 )
 
-// UsagerPayloadValidator : use to validate usager payload in all models
-type UsagerPayloadValidator struct {
-	Matricule string `bson:"matricule,omitempty" binding:"required"`
+// NewUsagerPayloadValidator : use to validate new usager payload in all models
+type NewUsagerPayloadValidator struct {
+	FirstName             string `json:"first_name,omitempty" binding:"required"`
+	LastName              string `json:"last_name,omitempty" binding:"required"`
+	Address               string `json:"address,omitempty" binding:"required"`
+	PhoneNumber           string `json:"phone_number,omitempty" binding:"required"`
+	IdentityNumber        string `json:"identity_number,omitempty" binding:"required"`
+	TypeDocument          string `json:"type_document,omitempty" binding:"required"`
+	Sexe                  string `json:"sexe,omitempty" binding:"required"`
+	SituationMatrimoniale string `json:"situation_matrimoniale,omitempty" binding:"required"`
+}
+
+// FindUsagerPayloadValidator : use to find usager payload
+type FindUsagerPayloadValidator struct {
+	Matricule string `json:"matricule,omitempty" unique:"true" binding:"required"`
 }
 
 //PostUsagerAPI : api to create a new usager
 func PostUsagerAPI(c *gin.Context) {
-	var usager Usager
-	if err := c.BindJSON(&usager); err != nil {
+	var payload NewUsagerPayloadValidator
+	if err := c.BindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	_, err := FindUsagerByPhoneNumber(usager.PhoneNumber)
+	_, err := FindUsagerByPhoneNumber(payload.PhoneNumber)
 	if err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "usager-already-exists", "response_code": "100"})
 		return
 	}
 	// We create here a new entry of usager
-	newUsager, err := CreateNewUsager(&usager)
+	newUsager, err := CreateNewUsager(&payload)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": err.Error(), "response_code": "100"})
 		return

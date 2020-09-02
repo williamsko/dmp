@@ -3,6 +3,8 @@ package usager
 import (
 	"context"
 	"dmp/db"
+	"dmp/utils"
+	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"time"
 )
@@ -30,13 +32,22 @@ func FindUsagerByMatricule(matricule string) (Usager, error) {
 }
 
 // CreateNewUsager : create a new usager
-func CreateNewUsager(usager *Usager) (*Usager, error) {
+func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	if usager.CreatedAt.IsZero() {
-		usager.CreatedAt = time.Now()
+	matricule := utils.RandomObjectMatricule(10)
+	newUsager := &Usager{
+		Matricule:             matricule,
+		FirstName:             usager.FirstName,
+		LastName:              usager.LastName,
+		Address:               usager.Address,
+		PhoneNumber:           usager.PhoneNumber,
+		IdentityNumber:        usager.IdentityNumber,
+		Sexe:                  usager.Sexe,
+		SituationMatrimoniale: usager.SituationMatrimoniale,
 	}
+	fmt.Println(matricule)
 	usagerCollection := db.ConnectDb().Collection("usager")
-	_, err := usagerCollection.InsertOne(ctx, usager)
-	return usager, err
+	_, err := usagerCollection.InsertOne(ctx, newUsager)
+	return newUsager, err
 }
