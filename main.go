@@ -2,7 +2,7 @@ package main
 
 import (
 	"dmp/db"
-	"dmp/dossier"
+	api "dmp/dossier/api"
 	"dmp/usager"
 	"github.com/gin-gonic/gin"
 )
@@ -20,11 +20,11 @@ func initRoutes() {
 	v1 := router.Group("/api/v1/usager")
 	{
 		v1.POST("/", usager.PostUsagerAPI)
-		v1.POST("/dossier", dossier.PostDossierAPI)
-		v1.POST("/dossier/antecedent", dossier.PostAntecedentAPI)
-		v1.POST("/dossier/consultation", dossier.PostConsultationAPI)
-		v1.POST("/dossier/hospitalisation", dossier.PostHospitalisationAPI)
-		v1.POST("/dossier/examen", dossier.PostExamenAPI)
+		v1.POST("/dossier", api.PostDossierAPI)
+		v1.POST("/dossier/antecedent", api.PostAntecedentAPI)
+		v1.POST("/dossier/consultation", api.PostConsultationAPI)
+		v1.POST("/dossier/hospitalisation", api.PostHospitalisationAPI)
+		v1.POST("/dossier/examen", api.PostExamenAPI)
 
 		// v1.GET("/", fetchAllTodo)
 		// v1.GET("/:id", fetchSingleTodo)
