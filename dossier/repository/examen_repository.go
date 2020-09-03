@@ -5,6 +5,8 @@ import (
 	"dmp/db"
 	"dmp/dossier"
 	"dmp/entity"
+	"go.mongodb.org/mongo-driver/bson"
+
 	"time"
 )
 
@@ -25,4 +27,17 @@ func AddContenuExamenUsagerToDossier(dossierMedical dossier.DossierMedical, exam
 	_, err := examenCollection.InsertOne(ctx, examen)
 	return examen, err
 
+}
+
+// GetAllExamensByDossierUsager : Retreive all examens for usager
+func GetAllExamensByDossierUsager(dossierMedical *dossier.DossierMedical) ([]dossier.Consultation, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	var examensUsager []dossier.Consultation
+	examensCollection := db.ConnectDb().Collection("examen")
+	cursor, err := examensCollection.Find(ctx, bson.M{"dossier": dossierMedical.ID})
+	if err = cursor.All(ctx, &examensUsager); err != nil {
+		panic(err)
+	}
+	return examensUsager, err
 }

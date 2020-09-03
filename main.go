@@ -2,7 +2,7 @@ package main
 
 import (
 	"dmp/db"
-	api "dmp/dossier/api"
+	dossierApi "dmp/dossier/api"
 	"dmp/usager"
 	"github.com/gin-gonic/gin"
 )
@@ -20,11 +20,11 @@ func initRoutes() {
 	v1 := router.Group("/api/v1/usager")
 	{
 		v1.POST("/", usager.PostUsagerAPI)
-		v1.POST("/dossier", api.PostDossierAPI)
-		v1.POST("/dossier/antecedent", api.PostAntecedentAPI)
-		v1.POST("/dossier/consultation", api.PostConsultationAPI)
-		v1.POST("/dossier/hospitalisation", api.PostHospitalisationAPI)
-		v1.POST("/dossier/examen", api.PostExamenAPI)
+		v1.POST("/dossier", dossierApi.PostDossierAPI)
+		v1.POST("/dossier/antecedent", dossierApi.PostAntecedentAPI)
+		v1.POST("/dossier/consultation", dossierApi.PostConsultationAPI)
+		v1.POST("/dossier/hospitalisation", dossierApi.PostHospitalisationAPI)
+		v1.POST("/dossier/examen", dossierApi.PostExamenAPI)
 
 		// v1.GET("/:id", fetchSingleTodo)
 		// v1.PUT("/:id", updateTodo)
@@ -34,8 +34,9 @@ func initRoutes() {
 	{
 		usagers.GET("/", usager.GetAllUsagerAPI)
 		usagers.GET("/:matricule", usager.GetUsagerByMatriculeAPI)
-
+		usagers.GET("/:matricule/dossier", dossierApi.GetDossierAPI)
 	}
+
 	router.Run(":9090")
 
 }

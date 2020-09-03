@@ -5,6 +5,7 @@ import (
 	"dmp/db"
 	"dmp/dossier"
 	"dmp/entity"
+	"go.mongodb.org/mongo-driver/bson"
 	"time"
 )
 
@@ -25,4 +26,18 @@ func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedi
 	_, err := hospitalisationCollection.InsertOne(ctx, hospitalisation)
 	return hospitalisation, err
 
+}
+
+// GetAllHospitalisationsByDossierUsager : Retreive all hospitalisations for usager
+func GetAllHospitalisationsByDossierUsager(dossierMedical *dossier.DossierMedical) ([]dossier.Hospitalisation, error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	var hospitalisationUsager []dossier.Hospitalisation
+	hospitalisationCollection := db.ConnectDb().Collection("consultation")
+	cursor, err := hospitalisationCollection.Find(ctx, bson.M{"dossier": dossierMedical.ID})
+	if err = cursor.All(ctx, &hospitalisationUsager); err != nil {
+		panic(err)
+	}
+	return hospitalisationUsager, err
 }
