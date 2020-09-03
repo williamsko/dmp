@@ -4,7 +4,6 @@ import (
 	"context"
 	"dmp/db"
 	"dmp/utils"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"time"
 )
@@ -46,8 +45,21 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 		Sexe:                  usager.Sexe,
 		SituationMatrimoniale: usager.SituationMatrimoniale,
 	}
-	fmt.Println(matricule)
 	usagerCollection := db.ConnectDb().Collection("usager")
 	_, err := usagerCollection.InsertOne(ctx, newUsager)
 	return newUsager, err
+}
+
+// GetAllUsers : Retreive all usager
+func GetAllUsers() ([]Usager, error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	var usagers []Usager
+	usagerCollection := db.ConnectDb().Collection("usager")
+	cursor, err := usagerCollection.Find(ctx, bson.M{})
+	if err = cursor.All(ctx, &usagers); err != nil {
+		panic(err)
+	}
+	return usagers, err
 }

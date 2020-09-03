@@ -40,7 +40,25 @@ func PostUsagerAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": err.Error(), "response_code": "100"})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"response_content": newUsager, "response_code": "000"})
+}
 
+//GetAllUsagerAPI : api get all usagers
+func GetAllUsagerAPI(c *gin.Context) {
+	usagers, err := GetAllUsers()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": err.Error(), "response_code": "100"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"response_content": usagers, "response_code": "000"})
+}
+
+//GetUsagerByMatriculeAPI : api get  usager
+func GetUsagerByMatriculeAPI(c *gin.Context) {
+	usager, err := FindUsagerByMatricule(c.Param("matricule"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-usager", "response_code": "100"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"response_content": usager, "response_code": "000"})
 }
