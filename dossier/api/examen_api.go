@@ -6,6 +6,7 @@ import (
 
 	"dmp/entity"
 	"dmp/usager"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -66,4 +67,26 @@ func PatchExamenAPI(c *gin.Context) {
 	}
 	result, err := repository.UpdateContenuExamen(payload, examen)
 	c.JSON(http.StatusOK, gin.H{"response_content": result, "response_code": "000"})
+}
+
+//FileUploadAPI : Upload file to usager dossier
+func FileUploadAPI(c *gin.Context) {
+
+	idExamen := c.Param("identifiant")
+	examen, err := repository.FindUsagerExamenByIdentifiant(idExamen)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-examen", "response_code": "100"})
+		return
+	}
+	fmt.Println(examen)
+
+	// single file
+	file, _ := c.FormFile("file")
+	fmt.Println(file.Filename)
+
+	// Upload the file to specific dst.
+	err = c.SaveUploadedFile(file, "/Users/alkengueleoua/Documents/projets/dmp/"+file.Filename)
+	fmt.Println(err)
+
+	c.JSON(http.StatusOK, gin.H{"response_content": "OK", "response_code": "000"})
 }

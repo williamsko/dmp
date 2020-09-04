@@ -16,33 +16,40 @@ func main() {
 
 func initRoutes() {
 	router := gin.Default()
-	v1 := router.Group("/api/v1/usager")
+	usagerDossierCreationRouter := router.Group("/api/v1/usager")
 	{
-		v1.POST("/", usager.PostUsagerAPI)
-		v1.POST("/dossier", dossierApi.PostDossierAPI)
+		usagerDossierCreationRouter.POST("/", usager.PostUsagerAPI)
+		usagerDossierCreationRouter.POST("/dossier", dossierApi.PostDossierAPI)
 
-		v1.PUT("/dossier/antecedent", dossierApi.PostAntecedentAPI)
-		v1.PUT("/dossier/consultation", dossierApi.PostConsultationAPI)
-		v1.PUT("/dossier/hospitalisation", dossierApi.PostHospitalisationAPI)
-		v1.PUT("/dossier/examen", dossierApi.PostExamenAPI)
+		usagerDossierCreationRouter.PUT("/dossier/antecedent", dossierApi.PostAntecedentAPI)
+		usagerDossierCreationRouter.PUT("/dossier/consultation", dossierApi.PostConsultationAPI)
+		usagerDossierCreationRouter.PUT("/dossier/hospitalisation", dossierApi.PostHospitalisationAPI)
+		usagerDossierCreationRouter.PUT("/dossier/examen", dossierApi.PostExamenAPI)
 
 		// v1.GET("/:id", fetchSingleTodo)
 		// v1.PUT("/:id", updateTodo)
 		// v1.DELETE("/:id", deleteTodo)
 	}
-	usagers := router.Group("/api/v1/usagers")
+	usagerDossierConsultationRouter := router.Group("/api/v1/usagers")
 	{
-		usagers.GET("/", usager.GetAllUsagerAPI)
-		usagers.GET("/:matricule", usager.GetUsagerByMatriculeAPI)
-		usagers.GET("/:matricule/dossier", dossierApi.GetDossierAPI)
+		usagerDossierConsultationRouter.GET("/", usager.GetAllUsagerAPI)
+		usagerDossierConsultationRouter.GET("/:matricule", usager.GetUsagerByMatriculeAPI)
+		usagerDossierConsultationRouter.GET("/:matricule/dossier", dossierApi.GetDossierAPI)
 
-		usagers.GET("/:matricule/dossier/antecedents", dossierApi.GetAntecedentAPI)
-		usagers.GET("/:matricule/dossier/consultations", dossierApi.GetConsultationAPI)
-		usagers.GET("/:matricule/dossier/hospitalisations", dossierApi.GetHispitalisationAPI)
-		usagers.GET("/:matricule/dossier/examens", dossierApi.GetExamenAPI)
+		usagerDossierConsultationRouter.GET("/:matricule/dossier/antecedents", dossierApi.GetAntecedentAPI)
+		usagerDossierConsultationRouter.GET("/:matricule/dossier/consultations", dossierApi.GetConsultationAPI)
+		usagerDossierConsultationRouter.GET("/:matricule/dossier/hospitalisations", dossierApi.GetHispitalisationAPI)
+		usagerDossierConsultationRouter.GET("/:matricule/dossier/examens", dossierApi.GetExamenAPI)
 
-		usagers.PATCH("/:matricule/dossier/examens/:identifiant", dossierApi.PatchExamenAPI)
+		usagerDossierConsultationRouter.PATCH("/:matricule/dossier/examens/:identifiant", dossierApi.PatchExamenAPI)
 	}
+
+	fileUploadRouter := router.Group("/api/v1/file")
+	{
+		fileUploadRouter.POST("/usager/:matricule/dossier/examens/:identifiant", dossierApi.FileUploadAPI)
+
+	}
+
 	router.Run(":9090")
 
 }

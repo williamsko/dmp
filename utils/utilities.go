@@ -1,13 +1,14 @@
 package utils
 
 import (
+	"io/ioutil"
 	"math/rand"
 )
 
 const (
 	letterBytes   = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ" // 52 possibilities
-	letterIdxBits = 6                                      // 6 bits to represent 64 possibilities / indexes
-	letterIdxMask = 1<<letterIdxBits - 1                   // All 1-bits, as many as letterIdxBits
+	letterIdxBits = 6
+	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
 )
 
 // RandomObjectMatricule : generate random matricule to usager, dossier etc ...
@@ -34,4 +35,16 @@ func SecureRandomBytes(length int) []byte {
 		panic("Unable to generate random bytes")
 	}
 	return randomBytes
+}
+
+// BuildFileName : create a filename of upload file
+func BuildFileName(prefix string, filename string) string {
+	return prefix + "-" + filename
+}
+
+// UploadFile : upload file to gridfs
+func UploadFile(file, filename string) error {
+
+	data, err := ioutil.ReadFile(file)
+	return err
 }
