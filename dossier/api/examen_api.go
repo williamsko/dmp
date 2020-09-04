@@ -44,9 +44,7 @@ func GetExamenAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
 		return
 	}
-	// Retreive antecedents usager
 	examensUsager, err := repository.GetAllExamensByDossierUsager(&dossierMedical)
-
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return
@@ -56,20 +54,16 @@ func GetExamenAPI(c *gin.Context) {
 
 //PatchExamenAPI : updateExamen with results
 func PatchExamenAPI(c *gin.Context) {
-
 	var payload dossier.UpdateExamenValidator
 	if err := c.BindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	examen, err := repository.FindUsagerExamenByIdentifiant(c.Param("identifiant"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-examen", "response_code": "100"})
 		return
 	}
-
 	result, err := repository.UpdateContenuExamen(payload, examen)
-
 	c.JSON(http.StatusOK, gin.H{"response_content": result, "response_code": "000"})
 }

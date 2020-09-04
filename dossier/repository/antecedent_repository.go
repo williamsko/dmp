@@ -14,9 +14,7 @@ import (
 func AddContenuAntecedentUsagerToDossier(dossierMedical dossier.DossierMedical, antecedentPayload dossier.NewAntecedentPayloadValidator, agent entity.Agent) (*dossier.Antecedent, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	antecedentCollection := db.ConnectDb().Collection("antecedent")
-
 	antecedent := &dossier.Antecedent{
 		Agent:                 agent.ID,
 		Entity:                agent.Entity,
@@ -29,12 +27,10 @@ func AddContenuAntecedentUsagerToDossier(dossierMedical dossier.DossierMedical, 
 	_, err := antecedentCollection.InsertOne(ctx, antecedent)
 	fmt.Println(err)
 	return antecedent, err
-
 }
 
 // GetAllAntecedentByDossierUsager : Retreive all antecedents for usager
 func GetAllAntecedentByDossierUsager(dossierMedical *dossier.DossierMedical) ([]dossier.Antecedent, error) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var antedecentsUsager []dossier.Antecedent

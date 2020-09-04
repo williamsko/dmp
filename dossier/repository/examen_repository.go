@@ -16,7 +16,6 @@ func AddContenuExamenUsagerToDossier(dossierMedical dossier.DossierMedical,
 	agent entity.Agent) (*dossier.Examen, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	examenCollection := db.ConnectDb().Collection("examen")
 	examen := &dossier.Examen{
 		Agent:          agent.ID,
@@ -53,7 +52,6 @@ func calculateExamenStatut(content []dossier.ExamenContent) string {
 
 // FindUsagerExamenByIdentifiant : Find usager examen for update
 func FindUsagerExamenByIdentifiant(ID string) (dossier.Examen, error) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var examen dossier.Examen
@@ -67,9 +65,7 @@ func FindUsagerExamenByIdentifiant(ID string) (dossier.Examen, error) {
 func UpdateContenuExamen(examenPayload dossier.UpdateExamenValidator, examen dossier.Examen) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	examenCollection := db.ConnectDb().Collection("examen")
-
 	result, err := examenCollection.UpdateOne(
 		ctx,
 		bson.M{"_id": examen.ID},
@@ -80,6 +76,5 @@ func UpdateContenuExamen(examenPayload dossier.UpdateExamenValidator, examen dos
 			},
 		},
 	)
-
 	return result.ModifiedCount, err
 }

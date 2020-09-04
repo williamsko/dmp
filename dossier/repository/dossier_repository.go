@@ -17,12 +17,9 @@ import (
 
 // FindDossierByUsagerID : Find usager dossier
 func FindDossierByUsagerID(_id primitive.ObjectID) (dossier.DossierMedical, error) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	dossierMedical := dossier.DossierMedical{}
-
 	dossierCollection := db.ConnectDb().Collection("dossier")
 	err := dossierCollection.FindOne(ctx, bson.M{"usager": _id}).Decode(&dossierMedical)
 	return dossierMedical, err
@@ -32,10 +29,8 @@ func FindDossierByUsagerID(_id primitive.ObjectID) (dossier.DossierMedical, erro
 func CreateEmptyDossier(usager usager.Usager, agent entity.Agent) (*dossier.DossierMedical, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	dossierCollection := db.ConnectDb().Collection("dossier")
 	numberDossier := utils.RandomObjectMatricule(10)
-
 	dossierMedical := &dossier.DossierMedical{
 		Usager: usager.ID,
 		Agent:  agent.ID,

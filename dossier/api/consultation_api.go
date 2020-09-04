@@ -3,7 +3,6 @@ package dossier
 import (
 	"dmp/dossier"
 	repository "dmp/dossier/repository"
-
 	"dmp/entity"
 	"dmp/usager"
 	"github.com/gin-gonic/gin"
@@ -43,19 +42,15 @@ func PostConsultationAPI(c *gin.Context) {
 //GetConsultationAPI : api to get usager consultation
 func GetConsultationAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
-
 	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
 		return
 	}
-	// Retreive antecedents usager
 	consultationsUsager, err := repository.GetAllConsultationsByDossierUsager(&dossierMedical)
-
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"response_content": consultationsUsager, "response_code": "000"})
-
 }

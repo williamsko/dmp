@@ -34,7 +34,6 @@ func PostUsagerAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "usager-already-exists", "response_code": "100"})
 		return
 	}
-	// We create here a new entry of usager
 	newUsager, err := CreateNewUsager(&payload)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": err.Error(), "response_code": "100"})

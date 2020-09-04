@@ -12,7 +12,6 @@ const (
 
 // RandomObjectMatricule : generate random matricule to usager, dossier etc ...
 func RandomObjectMatricule(length int) string {
-
 	result := make([]byte, length)
 	bufferSize := int(float64(length) * 1.3)
 	for i, j, randomBytes := 0, 0, []byte{}; i < length; j++ {
@@ -24,7 +23,6 @@ func RandomObjectMatricule(length int) string {
 			i++
 		}
 	}
-
 	return string(result)
 }
 

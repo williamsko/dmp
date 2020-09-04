@@ -13,9 +13,7 @@ import (
 func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedical, hospitalisationPayload dossier.NewHostpitalisationPayloadValidator, agent entity.Agent) (*dossier.Hospitalisation, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	hospitalisationCollection := db.ConnectDb().Collection("hospitalisation")
-
 	hospitalisation := &dossier.Hospitalisation{
 		Agent:                agent.ID,
 		Entity:               agent.Entity,
@@ -25,12 +23,10 @@ func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedi
 	}
 	_, err := hospitalisationCollection.InsertOne(ctx, hospitalisation)
 	return hospitalisation, err
-
 }
 
 // GetAllHospitalisationsByDossierUsager : Retreive all hospitalisations for usager
 func GetAllHospitalisationsByDossierUsager(dossierMedical *dossier.DossierMedical) ([]dossier.Hospitalisation, error) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var hospitalisationUsager []dossier.Hospitalisation

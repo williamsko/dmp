@@ -43,7 +43,6 @@ func PostDossierAPI(c *gin.Context) {
 //GetDossierAPI : api to create a new empty dmp for usager
 func GetDossierAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
-
 	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
@@ -54,7 +53,6 @@ func GetDossierAPI(c *gin.Context) {
 	consultationsUsager, err := repository.GetAllConsultationsByDossierUsager(&dossierMedical)
 	hospitalisationsUsager, err := repository.GetAllHospitalisationsByDossierUsager(&dossierMedical)
 	examensUsager, err := repository.GetAllExamensByDossierUsager(&dossierMedical)
-
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return

@@ -14,9 +14,7 @@ import (
 func AddContenuConsultationUsagerToDossier(dossierMedical dossier.DossierMedical, consultationPayload dossier.NewConsultationPayloadValidator, agent entity.Agent) (*dossier.Consultation, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	consultationCollection := db.ConnectDb().Collection("consultation")
-
 	consultation := &dossier.Consultation{
 		Agent:             agent.ID,
 		Entity:            agent.Entity,
@@ -32,7 +30,6 @@ func AddContenuConsultationUsagerToDossier(dossierMedical dossier.DossierMedical
 
 // GetAllConsultationsByDossierUsager : Retreive all consultations for usager
 func GetAllConsultationsByDossierUsager(dossierMedical *dossier.DossierMedical) ([]dossier.Consultation, error) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var consultationsUsager []dossier.Consultation

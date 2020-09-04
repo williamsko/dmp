@@ -42,7 +42,6 @@ func PostHospitalisationAPI(c *gin.Context) {
 //GetHispitalisationAPI : api to get usager hospitalisation
 func GetHispitalisationAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
-
 	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
@@ -56,5 +55,4 @@ func GetHispitalisationAPI(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"response_content": hospitalisationsUsager, "response_code": "000"})
-
 }

@@ -19,5 +19,4 @@ func ConnectDb() *mongo.Database {
 		log.Fatal(err)
 	}
 	return client.Database("todo")
-
 }

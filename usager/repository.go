@@ -10,7 +10,6 @@ import (
 
 // FindUsagerByPhoneNumber : Find usager
 func FindUsagerByPhoneNumber(phoneNumber string) (Usager, error) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var usager Usager
@@ -21,7 +20,6 @@ func FindUsagerByPhoneNumber(phoneNumber string) (Usager, error) {
 
 // FindUsagerByMatricule : Find usager
 func FindUsagerByMatricule(matricule string) (Usager, error) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var usager Usager
@@ -52,7 +50,6 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 
 // GetAllUsers : Retreive all usager
 func GetAllUsers() ([]Usager, error) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var usagers []Usager

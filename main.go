@@ -16,7 +16,6 @@ func main() {
 
 func initRoutes() {
 	router := gin.Default()
-
 	v1 := router.Group("/api/v1/usager")
 	{
 		v1.POST("/", usager.PostUsagerAPI)
@@ -43,9 +42,7 @@ func initRoutes() {
 		usagers.GET("/:matricule/dossier/examens", dossierApi.GetExamenAPI)
 
 		usagers.PATCH("/:matricule/dossier/examens/:identifiant", dossierApi.PatchExamenAPI)
-
 	}
-
 	router.Run(":9090")
 
 }
