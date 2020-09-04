@@ -3,6 +3,7 @@ package dossier
 import (
 	"dmp/dossier"
 	repository "dmp/dossier/repository"
+	"dmp/utils"
 
 	"dmp/entity"
 	"dmp/usager"
@@ -84,8 +85,8 @@ func FileUploadAPI(c *gin.Context) {
 	file, _ := c.FormFile("file")
 	fmt.Println(file.Filename)
 
-	// Upload the file to specific dst.
-	err = c.SaveUploadedFile(file, "/Users/alkengueleoua/Documents/projets/dmp/"+file.Filename)
+	// Upload the file to gridfs
+	err = utils.UploadFile(file, file.Filename)
 	fmt.Println(err)
 
 	c.JSON(http.StatusOK, gin.H{"response_content": "OK", "response_code": "000"})

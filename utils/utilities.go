@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"io/ioutil"
 	"math/rand"
 )
 
@@ -35,16 +34,4 @@ func SecureRandomBytes(length int) []byte {
 		panic("Unable to generate random bytes")
 	}
 	return randomBytes
-}
-
-// BuildFileName : create a filename of upload file
-func BuildFileName(prefix string, filename string) string {
-	return prefix + "-" + filename
-}
-
-// UploadFile : upload file to gridfs
-func UploadFile(file, filename string) error {
-
-	data, err := ioutil.ReadFile(file)
-	return err
 }

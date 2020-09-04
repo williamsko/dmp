@@ -4,6 +4,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
 	"log"
 )
 
@@ -11,12 +12,6 @@ import (
 func ConnectDb() *mongo.Database {
 	client := InitiateMongoClient()
 	return client.Database("todo")
-}
-
-// ConnectGridFs : Database connexion method to GridFS
-func ConnectGridFs() *mongo.Database {
-	client := InitiateMongoClient()
-	return client.Database("dmpfiles")
 }
 
 // InitiateMongoClient : Database connexion method
