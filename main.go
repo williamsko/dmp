@@ -21,10 +21,11 @@ func initRoutes() {
 	{
 		v1.POST("/", usager.PostUsagerAPI)
 		v1.POST("/dossier", dossierApi.PostDossierAPI)
-		v1.POST("/dossier/antecedent", dossierApi.PostAntecedentAPI)
-		v1.POST("/dossier/consultation", dossierApi.PostConsultationAPI)
-		v1.POST("/dossier/hospitalisation", dossierApi.PostHospitalisationAPI)
-		v1.POST("/dossier/examen", dossierApi.PostExamenAPI)
+
+		v1.PUT("/dossier/antecedent", dossierApi.PostAntecedentAPI)
+		v1.PUT("/dossier/consultation", dossierApi.PostConsultationAPI)
+		v1.PUT("/dossier/hospitalisation", dossierApi.PostHospitalisationAPI)
+		v1.PUT("/dossier/examen", dossierApi.PostExamenAPI)
 
 		// v1.GET("/:id", fetchSingleTodo)
 		// v1.PUT("/:id", updateTodo)
@@ -35,6 +36,14 @@ func initRoutes() {
 		usagers.GET("/", usager.GetAllUsagerAPI)
 		usagers.GET("/:matricule", usager.GetUsagerByMatriculeAPI)
 		usagers.GET("/:matricule/dossier", dossierApi.GetDossierAPI)
+
+		usagers.GET("/:matricule/dossier/antecedents", dossierApi.GetAntecedentAPI)
+		usagers.GET("/:matricule/dossier/consultations", dossierApi.GetConsultationAPI)
+		usagers.GET("/:matricule/dossier/hospitalisations", dossierApi.GetHispitalisationAPI)
+		usagers.GET("/:matricule/dossier/examens", dossierApi.GetExamenAPI)
+
+		usagers.PATCH("/:matricule/dossier/examens/:identifiant", dossierApi.PatchExamenAPI)
+
 	}
 
 	router.Run(":9090")

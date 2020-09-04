@@ -36,5 +36,25 @@ func PostHospitalisationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "antecedent-creation-error", "response_code": "100"})
 		return
 	}
-	c.JSON(http.StatusBadRequest, gin.H{"response_content": consultation, "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"response_content": consultation, "response_code": "000"})
+}
+
+//GetHispitalisationAPI : api to get usager hospitalisation
+func GetHispitalisationAPI(c *gin.Context) {
+	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
+
+	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
+		return
+	}
+	// Retreive antecedents usager
+	hospitalisationsUsager, err := repository.GetAllHospitalisationsByDossierUsager(&dossierMedical)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"response_content": hospitalisationsUsager, "response_code": "000"})
+
 }

@@ -32,8 +32,44 @@ func PostExamenAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-
 	examen, err := repository.AddContenuExamenUsagerToDossier(dossier, payload, foundAgent)
+	c.JSON(http.StatusOK, gin.H{"response_content": examen, "response_code": "000"})
+}
 
-	c.JSON(http.StatusBadRequest, gin.H{"response_content": examen, "response_code": "000"})
+//GetExamenAPI : api to get usager examen
+func GetExamenAPI(c *gin.Context) {
+	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
+	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
+		return
+	}
+	// Retreive antecedents usager
+	examensUsager, err := repository.GetAllExamensByDossierUsager(&dossierMedical)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"response_content": examensUsager, "response_code": "000"})
+}
+
+//PatchExamenAPI : updateExamen with results
+func PatchExamenAPI(c *gin.Context) {
+
+	var payload dossier.UpdateExamenValidator
+	if err := c.BindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	examen, err := repository.FindUsagerExamenByIdentifiant(c.Param("identifiant"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-examen", "response_code": "100"})
+		return
+	}
+
+	result, err := repository.UpdateContenuExamen(payload, examen)
+
+	c.JSON(http.StatusOK, gin.H{"response_content": result, "response_code": "000"})
 }

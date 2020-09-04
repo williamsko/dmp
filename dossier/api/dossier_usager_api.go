@@ -37,7 +37,7 @@ func PostDossierAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return
 	}
-	c.JSON(http.StatusBadRequest, gin.H{"response_content": dossierMedical, "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"response_content": dossierMedical, "response_code": "000"})
 }
 
 //GetDossierAPI : api to create a new empty dmp for usager
@@ -59,12 +59,13 @@ func GetDossierAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return
 	}
-	c.JSON(http.StatusBadRequest, gin.H{"response_content": gin.H{
+	c.JSON(http.StatusOK, gin.H{"response_content": gin.H{
 		"dossier":          dossierMedical,
 		"antecedents":      antecedentsUsager,
 		"consultations":    consultationsUsager,
 		"examens":          examensUsager,
-		"hospitalisations": hospitalisationsUsager},
+		"hospitalisations": hospitalisationsUsager,
+	},
 		"response_code": "000",
 	})
 }

@@ -37,5 +37,25 @@ func PostAntecedentAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "antecedent-creation-error", "response_code": "100"})
 		return
 	}
-	c.JSON(http.StatusBadRequest, gin.H{"response_content": antecedent, "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"response_content": antecedent, "response_code": "000"})
+}
+
+//GetAntecedentAPI : api to get usager antecedent
+func GetAntecedentAPI(c *gin.Context) {
+	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
+
+	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
+		return
+	}
+	// Retreive antecedents usager
+	antecedentsUsager, err := repository.GetAllAntecedentByDossierUsager(&dossierMedical)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"response_content": antecedentsUsager, "response_code": "000"})
+
 }

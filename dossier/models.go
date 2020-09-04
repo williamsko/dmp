@@ -23,6 +23,7 @@ type Examen struct {
 	Agent          primitive.ObjectID `bson:"agent,omitempty"`
 	Entity         primitive.ObjectID `bson:"entity,omitempty"`
 	Content        []ExamenContent    `bson:"content,omitempty"`
+	Statut         string             `bson:"statut,omitempty"`
 	Type           string             `bson:"examen_type,omitempty"`
 	CreatedAt      time.Time          `json:"created_at" bson:"created_at"`
 }
@@ -70,10 +71,3 @@ type ExamenContent struct {
 	Value     string             `bson:"value,omitempty"`
 	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
 }
-
-//DossierContentType
-const (
-	EXAMEN       = "EXAMEN"
-	RESULTAT     = "RESULTAT"
-	CONSULTATION = "CONSULTATION"
-)

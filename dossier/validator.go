@@ -51,3 +51,8 @@ type NewExamenValidator struct {
 	Usager  usager.FindUsagerPayloadValidator `bson:"usager,omitempty" binding:"required"`
 	Agent   entity.AgentPayloadValidator      `bson:"agent,omitempty" binding:"required"`
 }
+
+// UpdateExamenValidator : for validation of examen udpate API
+type UpdateExamenValidator struct {
+	Content []ExamenContent `bson:"content,omitempty" json:"content,omitempty"  binding:"required"`
+}
