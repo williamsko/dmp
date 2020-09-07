@@ -8,7 +8,7 @@ import (
 )
 
 // SetupRoutes : setup routes for project
-func SetupRoutes() {
+func SetupRoutes() *gin.Engine {
 
 	router := gin.Default()
 	usagerRouter := router.Group("/api/v1/usager")
@@ -43,6 +43,6 @@ func SetupRoutes() {
 	}
 	log.Print("This is our first log message in Go.")
 
-	router.Run(":9090")
+	return router
 
 }
