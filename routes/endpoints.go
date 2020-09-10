@@ -28,7 +28,7 @@ func SetupRoutes() *gin.Engine {
 		usagerRouter.GET("/:matricule/dossier/hospitalisations", dossierApi.GetHispitalisationAPI)
 		usagerRouter.GET("/:matricule/dossier/examens", dossierApi.GetExamenAPI)
 
-		usagerRouter.PATCH("/:matricule/dossier/examens/:identifiant", dossierApi.PatchExamenAPI)
+		usagerRouter.PATCH("/:matricule/dossier/examen/:identifiant", dossierApi.PatchExamenAPI)
 	}
 	usagersRoute := router.Group("/api/v1/usagers")
 	{
@@ -36,11 +36,17 @@ func SetupRoutes() *gin.Engine {
 
 	}
 
-	fileUploadRouter := router.Group("/api/v1/file")
+	fileUploadRouter := router.Group("/api/v1/upload")
 	{
-		fileUploadRouter.POST("/usager/:matricule/dossier/examens/:identifiant", dossierApi.FileUploadAPI)
+		fileUploadRouter.POST("/usager/:matricule/dossier/examen/:identifiant", dossierApi.FileUploadAPI)
 
 	}
+	fileDownloadRouter := router.Group("/api/v1/download")
+	{
+		fileDownloadRouter.GET("/usager/:matricule/dossier/examen/:identifiant", dossierApi.FileDownloadAPI)
+
+	}
+
 	log.Print("This is our first log message in Go.")
 
 	return router

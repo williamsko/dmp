@@ -30,7 +30,7 @@ func CreateEmptyDossier(usager usager.Usager, agent entity.Agent) (*dossier.Doss
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	dossierCollection := db.ConnectDb().Collection("dossier")
-	numberDossier := utils.RandomObjectMatricule(10)
+	numberDossier := utils.GenerateRandomNumber()
 	dossierMedical := &dossier.DossierMedical{
 		Usager: usager.ID,
 		Agent:  agent.ID,

@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// Dossier : DMP  for users
+// DossierMedical : DMP  for users
 type DossierMedical struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty"`
 	Usager     primitive.ObjectID `bson:"usager,omitempty"`
@@ -18,14 +18,15 @@ type DossierMedical struct {
 
 // Examen : DMP Content
 type Examen struct {
-	ID             primitive.ObjectID `bson:"_id,omitempty"`
-	DossierMedical primitive.ObjectID `bson:"dossier,omitempty"`
-	Agent          primitive.ObjectID `bson:"agent,omitempty"`
-	Entity         primitive.ObjectID `bson:"entity,omitempty"`
-	Content        []ExamenContent    `bson:"content,omitempty"`
-	Statut         string             `bson:"statut,omitempty"`
-	Type           string             `bson:"examen_type,omitempty"`
-	CreatedAt      time.Time          `json:"created_at" bson:"created_at"`
+	ID             primitive.ObjectID   `bson:"_id,omitempty"`
+	DossierMedical primitive.ObjectID   `bson:"dossier,omitempty"`
+	Agent          primitive.ObjectID   `bson:"agent,omitempty"`
+	Entity         primitive.ObjectID   `bson:"entity,omitempty"`
+	Content        []ExamenContent      `bson:"content,omitempty"`
+	Files          []ExamenContentFiles `bson:"files,omitempty"`
+	Statut         string               `bson:"statut,omitempty"`
+	Type           string               `bson:"examen_type,omitempty"`
+	CreatedAt      time.Time            `json:"created_at" bson:"created_at"`
 }
 
 // Antecedent : Antecedent
@@ -70,4 +71,10 @@ type ExamenContent struct {
 	Name      string             `bson:"name,omitempty"`
 	Value     string             `bson:"value,omitempty"`
 	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
+}
+
+// ExamenContentFiles : Examen content files
+type ExamenContentFiles struct {
+	ID        string    `bson:"_id,omitempty"`
+	CreatedAt time.Time `json:"created_at" bson:"created_at"`
 }

@@ -3,12 +3,11 @@ package dossier
 import (
 	"dmp/dossier"
 	repository "dmp/dossier/repository"
-	"dmp/utils"
-
 	"dmp/entity"
 	"dmp/usager"
-	"fmt"
+	"dmp/utils"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -79,15 +78,42 @@ func FileUploadAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-examen", "response_code": "100"})
 		return
 	}
-	fmt.Println(examen)
+	log.Println(examen)
 
 	// single file
 	file, _ := c.FormFile("file")
-	fmt.Println(file.Filename)
+	log.Println(file.Filename)
 
 	// Upload the file to gridfs
-	err = utils.UploadFile(file, file.Filename)
-	fmt.Println(err)
+	fileID, err := utils.UploadFile(file, file.Filename)
+	_, err = repository.UpdateContenuExamenWithFile(examen, fileID)
+	log.Println(err)
 
-	c.JSON(http.StatusOK, gin.H{"response_content": "OK", "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"response_content": fileID, "response_code": "000"})
+
+}
+
+//FileDownloadAPI : Download file from usager dossier
+func FileDownloadAPI(c *gin.Context) {
+
+	idExamen := c.Param("identifiant")
+	fileID := c.Query("fileID")
+	log.Println("File ID", fileID)
+	examen, err := repository.FindUsagerExamenByIdentifiant(idExamen)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-examen", "response_code": "100"})
+		return
+	}
+	log.Println(examen)
+
+	// Upload the file to gridfs
+	file := utils.DownloadFile(fileID)
+	log.Println(err)
+
+	c.Header("Content-Disposition", "attachment; filename="+fileID)
+	c.Header("Content-Type", "pdf")
+	c.Header("Content-Length", "100")
+
+	c.JSON(http.StatusOK, file)
+
 }

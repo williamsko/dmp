@@ -32,7 +32,7 @@ func FindUsagerByMatricule(matricule string) (Usager, error) {
 func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	matricule := utils.RandomObjectMatricule(10)
+	matricule := utils.GenerateRandomNumber()
 	newUsager := &Usager{
 		Matricule:             matricule,
 		FirstName:             usager.FirstName,
@@ -45,6 +45,7 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 	}
 	usagerCollection := db.ConnectDb().Collection("usager")
 	_, err := usagerCollection.InsertOne(ctx, newUsager)
+
 	return newUsager, err
 }
 

@@ -39,6 +39,7 @@ func PostUsagerAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": err.Error(), "response_code": "100"})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"response_content": newUsager, "response_code": "000"})
 }
 

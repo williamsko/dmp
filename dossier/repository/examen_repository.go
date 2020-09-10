@@ -7,6 +7,7 @@ import (
 	"dmp/entity"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"log"
 	"time"
 )
 
@@ -57,6 +58,9 @@ func FindUsagerExamenByIdentifiant(ID string) (dossier.Examen, error) {
 	var examen dossier.Examen
 	examenCollection := db.ConnectDb().Collection("examen")
 	examenID, err := primitive.ObjectIDFromHex(ID)
+	log.Print(examenID)
+	log.Print(err)
+
 	err = examenCollection.FindOne(ctx, bson.M{"_id": examenID}).Decode(&examen)
 	return examen, err
 }
@@ -77,4 +81,27 @@ func UpdateContenuExamen(examenPayload dossier.UpdateExamenValidator, examen dos
 		},
 	)
 	return result.ModifiedCount, err
+}
+
+// UpdateContenuExamenWithFile :  add consultation to dosser usager
+func UpdateContenuExamenWithFile(examen dossier.Examen, fileID string) (int64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	examenCollection := db.ConnectDb().Collection("examen")
+	examenContentFile := createExamenContent(fileID)
+	examenContentFiles := append(examen.Files, examenContentFile)
+	result, err := examenCollection.UpdateOne(
+		ctx,
+		bson.M{"_id": examen.ID},
+		bson.D{
+			{"$set", bson.D{{Key: "files", Value: examenContentFiles}}}})
+
+	return result.ModifiedCount, err
+}
+
+func createExamenContent(fileID string) dossier.ExamenContentFiles {
+	examenContentFile := dossier.ExamenContentFiles{
+		ID: fileID,
+	}
+	return examenContentFile
 }
