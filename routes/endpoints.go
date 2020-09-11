@@ -43,7 +43,7 @@ func SetupRoutes() *gin.Engine {
 	}
 	fileDownloadRouter := router.Group("/api/v1/download")
 	{
-		fileDownloadRouter.GET("/usager/:matricule/dossier/examen/:identifiant", dossierApi.FileDownloadAPI)
+		fileDownloadRouter.GET("/usager/:matricule/dossier/examen/:identifiant/file", dossierApi.FileDownloadAPI)
 
 	}
 

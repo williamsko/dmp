@@ -47,7 +47,8 @@ func DownloadFile(fileID string) []byte {
 	defer cancel()
 
 	var results bson.M
-	err := fsFiles.FindOne(ctx, bson.M{}).Decode(&results)
+	log.Println("FILEID : ", fileID)
+	err := fsFiles.FindOne(ctx, bson.M{"_id": fileID}).Decode(&results)
 	if err != nil {
 		log.Fatal(err)
 	}

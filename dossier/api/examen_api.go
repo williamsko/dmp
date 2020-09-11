@@ -1,12 +1,16 @@
 package dossier
 
 import (
+	"bytes"
 	"dmp/dossier"
 	repository "dmp/dossier/repository"
 	"dmp/entity"
 	"dmp/usager"
 	"dmp/utils"
 	"github.com/gin-gonic/gin"
+	"image"
+	jpeg "image/jpeg"
+	"io"
 	"log"
 	"net/http"
 )
@@ -97,7 +101,7 @@ func FileUploadAPI(c *gin.Context) {
 func FileDownloadAPI(c *gin.Context) {
 
 	idExamen := c.Param("identifiant")
-	fileID := c.Query("fileID")
+	fileID := c.Query("file_id")
 	log.Println("File ID", fileID)
 	examen, err := repository.FindUsagerExamenByIdentifiant(idExamen)
 	if err != nil {
@@ -108,12 +112,16 @@ func FileDownloadAPI(c *gin.Context) {
 
 	// Upload the file to gridfs
 	file := utils.DownloadFile(fileID)
-	log.Println(err)
+	im, str, error := image.Decode(bytes.NewReader(file))
+	log.Println(str)
+	log.Println(error)
 
-	c.Header("Content-Disposition", "attachment; filename="+fileID)
-	c.Header("Content-Type", "pdf")
-	c.Header("Content-Length", "100")
-
-	c.JSON(http.StatusOK, file)
+	c.Header("Content-Disposition", "attachment; filename="+fileID+".jpeg")
+	c.Header("Content-Type", "image/jpeg")
+	c.Stream(func(w io.Writer) bool {
+		jpeg.Encode(w, im, nil)
+		return false
+	})
+	c.Writer.Write(file)
 
 }
