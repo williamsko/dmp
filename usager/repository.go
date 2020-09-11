@@ -29,7 +29,7 @@ func FindUsagerByMatricule(matricule string) (Usager, error) {
 }
 
 // CreateNewUsager : create a new usager
-func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
+func CreateNewUsager(usager *NewUsagerPayloadValidator) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	matricule := utils.GenerateRandomNumber()
@@ -42,11 +42,12 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 		IdentityNumber:        usager.IdentityNumber,
 		Sexe:                  usager.Sexe,
 		SituationMatrimoniale: usager.SituationMatrimoniale,
+		CreatedAt:             time.Now(),
 	}
 	usagerCollection := db.ConnectDb().Collection("usager")
 	_, err := usagerCollection.InsertOne(ctx, newUsager)
 
-	return newUsager, err
+	return matricule, err
 }
 
 // GetAllUsers : Retreive all usager

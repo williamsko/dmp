@@ -47,7 +47,7 @@ func SetupRoutes() *gin.Engine {
 
 	}
 
-	log.Print("This is our first log message in Go.")
+	log.Print("Starting DMP Server ...")
 
 	return router
 
