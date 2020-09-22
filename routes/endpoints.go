@@ -3,8 +3,9 @@ package routes
 import (
 	dossierApi "dmp/dossier/api"
 	"dmp/usager"
-	"github.com/gin-gonic/gin"
 	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 // SetupRoutes : setup routes for project
@@ -12,6 +13,7 @@ func SetupRoutes() *gin.Engine {
 
 	router := gin.Default()
 	usagerRouter := router.Group("/api/v1/usager")
+
 	{
 		usagerRouter.POST("/", usager.PostUsagerAPI)
 		usagerRouter.POST("/dossier", dossierApi.PostDossierAPI)

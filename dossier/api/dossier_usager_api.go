@@ -3,7 +3,6 @@ package dossier
 import (
 	"dmp/dossier"
 	repository "dmp/dossier/repository"
-
 	"dmp/entity"
 	"dmp/usager"
 	"github.com/gin-gonic/gin"

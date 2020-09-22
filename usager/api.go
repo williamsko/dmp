@@ -7,14 +7,14 @@ import (
 
 // NewUsagerPayloadValidator : use to validate new usager payload in all models
 type NewUsagerPayloadValidator struct {
-	FirstName             string `json:"first_name,omitempty" binding:"required"`
-	LastName              string `json:"last_name,omitempty" binding:"required"`
-	Address               string `json:"address,omitempty" binding:"required"`
-	PhoneNumber           string `json:"phone_number,omitempty" binding:"required"`
-	IdentityNumber        string `json:"identity_number,omitempty" binding:"required"`
-	TypeDocument          string `json:"type_document,omitempty" binding:"required"`
-	Sexe                  string `json:"sexe,omitempty" binding:"required"`
-	SituationMatrimoniale string `json:"situation_matrimoniale,omitempty" binding:"required"`
+	FirstName             string `bson:"first_name" binding:"required"`
+	LastName              string `bson:"last_name" binding:"required"`
+	Address               string `bson:"address" binding:"required"`
+	PhoneNumber           string `bson:"phone_number" binding:"required"`
+	IdentityNumber        string `bson:"identity_number" binding:"required"`
+	TypeDocument          string `bson:"type_document" binding:"required"`
+	Sexe                  string `bson:"sexe" binding:"required"`
+	SituationMatrimoniale string `bson:"situation_matrimoniale" binding:"required"`
 }
 
 // FindUsagerPayloadValidator : use to find usager payload

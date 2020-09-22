@@ -11,7 +11,8 @@ import (
 )
 
 // AddContenuConsultationUsagerToDossier :  add consultation to dosser usager
-func AddContenuConsultationUsagerToDossier(dossierMedical dossier.DossierMedical, consultationPayload dossier.NewConsultationPayloadValidator, agent entity.Agent) (*dossier.Consultation, error) {
+func AddContenuConsultationUsagerToDossier(dossierMedical dossier.DossierMedical, 
+	consultationPayload dossier.NewConsultationPayloadValidator, agent entity.Agent) (*dossier.Consultation, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	consultationCollection := db.ConnectDb().Collection("consultation")

@@ -41,6 +41,7 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (string, error) {
 		PhoneNumber:           usager.PhoneNumber,
 		IdentityNumber:        usager.IdentityNumber,
 		Sexe:                  usager.Sexe,
+		TypeDocument :         usager.TypeDocument,
 		SituationMatrimoniale: usager.SituationMatrimoniale,
 		CreatedAt:             time.Now(),
 	}

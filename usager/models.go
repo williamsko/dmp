@@ -8,14 +8,14 @@ import (
 // Usager : regroupe l'ensemble des usagers de la plateforme
 type Usager struct {
 	ID                    primitive.ObjectID `bson:"_id,omitempty"`
-	Matricule             string             `json:"matricule,omitempty" unique:"true"`
-	FirstName             string             `json:"first_name,omitempty" binding:"required"`
-	LastName              string             `json:"last_name,omitempty" binding:"required"`
-	Address               string             `json:"address,omitempty" binding:"required"`
-	PhoneNumber           string             `json:"phone_number,omitempty" binding:"required"`
-	IdentityNumber        string             `json:"identity_number,omitempty" binding:"required"`
-	TypeDocument          string             `json:"type_document,omitempty" binding:"required"`
-	Sexe                  string             `json:"sexe,omitempty" binding:"required"`
-	SituationMatrimoniale string             `json:"situation_matrimoniale,omitempty" binding:"required"`
-	CreatedAt             time.Time          `json:"created_at" bson:"created_at" time_format:"2006-01-02"`
+	Matricule             string             `bson:"matricule" unique:"true"`
+	FirstName             string             `bson:"first_name" binding:"required"`
+	LastName              string             `bson:"last_name" binding:"required"`
+	Address               string             `bson:"address" binding:"required"`
+	PhoneNumber           string             `bson:"phone_number" binding:"required"`
+	IdentityNumber        string             `bson:"identity_number" binding:"required"`
+	TypeDocument          string             `bson:"type_document" binding:"required"`
+	Sexe                  string             `bson:"sexe" binding:"required"`
+	SituationMatrimoniale string             `bson:"situation_matrimoniale" binding:"required"`
+	CreatedAt             time.Time          `bson:"created_at" bson:"created_at" time_format:"2006-01-02"`
 }
