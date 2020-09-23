@@ -7,74 +7,74 @@ import (
 
 // DossierMedical : DMP  for users
 type DossierMedical struct {
-	ID         primitive.ObjectID `bson:"_id"`
-	Usager     primitive.ObjectID `bson:"usager"`
-	Number     string             `bson:"matricule"`
-	CreatedAt  time.Time          `bson:"created_at"`
-	LastAccess time.Time          `bson:"last_access"`
-	Agent      primitive.ObjectID `bson:"agent"`  //Agent who created the DMP
-	Entity     primitive.ObjectID `bson:"entity"` //In which entity the DMP is created
+	ID         primitive.ObjectID `json:"_id"`
+	Usager     primitive.ObjectID `json:"usager"`
+	Number     string             `json:"matricule"`
+	CreatedAt  time.Time          `json:"created_at"`
+	LastAccess time.Time          `json:"last_access"`
+	Agent      primitive.ObjectID `json:"agent"`  //Agent who created the DMP
+	Entity     primitive.ObjectID `json:"entity"` //In which entity the DMP is created
 }
 
 // Examen : DMP Content
 type Examen struct {
-	ID             primitive.ObjectID   `bson:"_id,omitempty"`
-	DossierMedical primitive.ObjectID   `bson:"dossier,omitempty"`
-	Agent          primitive.ObjectID   `bson:"agent,omitempty"`
-	Entity         primitive.ObjectID   `bson:"entity,omitempty"`
-	Content        []ExamenContent      `bson:"content,omitempty"`
-	Files          []ExamenContentFiles `bson:"files,omitempty"`
-	Statut         string               `bson:"statut,omitempty"`
-	Type           string               `bson:"examen_type,omitempty"`
-	CreatedAt      time.Time            `bson:"created_at"`
+	ID             primitive.ObjectID   `json:"_id,omitempty"`
+	DossierMedical primitive.ObjectID   `json:"dossier,omitempty"`
+	Agent          primitive.ObjectID   `json:"agent,omitempty"`
+	Entity         primitive.ObjectID   `json:"entity,omitempty"`
+	Content        []ExamenContent      `json:"content,omitempty"`
+	Files          []ExamenContentFiles `json:"files,omitempty"`
+	Statut         string               `json:"statut,omitempty"`
+	Type           string               `json:"examen_type,omitempty"`
+	CreatedAt      time.Time            `json:"created_at"`
 }
 
 // Antecedent : Antecedent
 type Antecedent struct {
-	ID                    primitive.ObjectID `bson:"_id"`
-	DossierMedical        primitive.ObjectID `bson:"dossier"`
-	Agent                 primitive.ObjectID `bson:"agent"`
-	Entity                primitive.ObjectID `bson:"entity"`
-	AntecedentMedical     string             `bson:"antecedent_medical"`
-	AntecedentChirurgical string             `bson:"antecedent_chirurgical"`
-	AntecedentFamilial    string             `bson:"antecedent_familial"`
-	ModeDeVie             string             `bson:"mode_de_vie"`
-	CreatedAt             time.Time          `bson:"created_at"`
+	ID                    primitive.ObjectID `json:"_id"`
+	DossierMedical        primitive.ObjectID `json:"dossier"`
+	Agent                 primitive.ObjectID `json:"agent"`
+	Entity                primitive.ObjectID `json:"entity"`
+	AntecedentMedical     string             `json:"antecedent_medical"`
+	AntecedentChirurgical string             `json:"antecedent_chirurgical"`
+	AntecedentFamilial    string             `json:"antecedent_familial"`
+	ModeDeVie             string             `json:"mode_de_vie"`
+	CreatedAt             time.Time          `json:"created_at"`
 }
 
 // Consultation : all consultations model
 type Consultation struct {
-	ID                primitive.ObjectID `bson:"_id"`
-	DossierMedical    primitive.ObjectID `bson:"dossier"`
-	Agent             primitive.ObjectID `bson:"agent"`
-	Entity            primitive.ObjectID `bson:"entity"`
-	MotifConsultation string             `bson:"motif_consultation"`
-	HistoireMaladie   string             `bson:"histoire_maladie"`
-	Commentaire       string             `bson:"commentaire"`
-	CreatedAt         time.Time          `bson:"created_at"`
+	ID                primitive.ObjectID `json:"_id"`
+	DossierMedical    primitive.ObjectID `json:"dossier"`
+	Agent             primitive.ObjectID `json:"agent"`
+	Entity            primitive.ObjectID `json:"entity"`
+	MotifConsultation string             `json:"motif_consultation"`
+	HistoireMaladie   string             `json:"histoire_maladie"`
+	Commentaire       string             `json:"commentaire"`
+	CreatedAt         time.Time          `json:"created_at"`
 }
 
 // Hospitalisation : all Hospitalisation model
 type Hospitalisation struct {
-	ID                   primitive.ObjectID `bson:"_id"`
-	DossierMedical       primitive.ObjectID `bson:"dossier"`
-	Agent                primitive.ObjectID `bson:"agent"`
-	Entity               primitive.ObjectID `bson:"entity"`
-	MotifHospitalisation string             `bson:"motif_hospitalisation"`
-	Commentaire          string             `bson:"commentaire"`
-	CreatedAt            time.Time          `bson:"created_at"`
+	ID                   primitive.ObjectID `json:"_id"`
+	DossierMedical       primitive.ObjectID `json:"dossier"`
+	Agent                primitive.ObjectID `json:"agent"`
+	Entity               primitive.ObjectID `json:"entity"`
+	MotifHospitalisation string             `json:"motif_hospitalisation"`
+	Commentaire          string             `json:"commentaire"`
+	CreatedAt            time.Time          `json:"created_at"`
 }
 
 // ExamenContent : Examen content
 type ExamenContent struct {
-	ID        primitive.ObjectID `bson:"_id"`
-	Name      string             `bson:"name"`
-	Value     string             `bson:"value"`
-	CreatedAt time.Time          `bson:"created_at"`
+	ID        primitive.ObjectID `json:"_id"`
+	Name      string             `json:"name"`
+	Value     string             `json:"value"`
+	CreatedAt time.Time          `json:"created_at"`
 }
 
 // ExamenContentFiles : Examen content files
 type ExamenContentFiles struct {
-	ID        string    `bson:"_id"`
-	CreatedAt time.Time `bson:"created_at"`
+	ID        string    `json:"_id"`
+	CreatedAt time.Time `json:"created_at"`
 }

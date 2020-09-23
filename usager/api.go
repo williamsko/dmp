@@ -1,20 +1,32 @@
 package usager
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // NewUsagerPayloadValidator : use to validate new usager payload in all models
 type NewUsagerPayloadValidator struct {
-	FirstName             string `bson:"first_name" binding:"required"`
-	LastName              string `bson:"last_name" binding:"required"`
-	Address               string `bson:"address" binding:"required"`
-	PhoneNumber           string `bson:"phone_number" binding:"required"`
-	IdentityNumber        string `bson:"identity_number" binding:"required"`
-	TypeDocument          string `bson:"type_document" binding:"required"`
-	Sexe                  string `bson:"sexe" binding:"required"`
-	SituationMatrimoniale string `bson:"situation_matrimoniale" binding:"required"`
+	FirstName                  string                     `json:"first_name" binding:"required"`
+	LastName                   string                     `json:"last_name" binding:"required"`
+	Address                    string                     `json:"address" binding:"required"`
+	PhoneNumber                string                     `json:"phone_number" binding:"required"`
+	IdentityNumber             string                     `json:"identity_number" binding:"required"`
+	TypeDocument               string                     `json:"type_document" binding:"required"`
+	Sexe                       string                     `json:"sexe" binding:"required"`
+	SituationMatrimoniale      string                     `json:"situation_matrimoniale" binding:"required"`
+	PersonneaPrevenirValidator PersonneaPrevenirValidator `json:"personne_a_prevenir" binding:"required"`
+}
+
+// PersonneaPrevenirValidator : use to validate personne a prevenir payload
+type PersonneaPrevenirValidator struct {
+	FirstName          string `json:"first_name" binding:"required"`
+	LastName           string `json:"last_name" binding:"required"`
+	Address            string `json:"address" binding:"required"`
+	PhoneNumber        string `json:"phone_number" binding:"required"`
+	Sexe               string `json:"sexe" binding:"required"`
+	RelationWithUsager string `json:"relation_with_usager" binding:"required"`
 }
 
 // FindUsagerPayloadValidator : use to find usager payload
@@ -34,13 +46,13 @@ func PostUsagerAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "usager-already-exists", "response_code": "100"})
 		return
 	}
-	newUsager, err := CreateNewUsager(&payload)
+	createdUsager, err := CreateNewUsager(&payload)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": err.Error(), "response_code": "100"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"response_content": newUsager, "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"matricule_usager": createdUsager.Matricule, "numero_dossier_usager": "createdUsager", "response_code": "000"})
 }
 
 //GetAllUsagerAPI : api get all usagers
