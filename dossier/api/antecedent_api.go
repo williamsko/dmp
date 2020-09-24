@@ -5,8 +5,9 @@ import (
 	repository "dmp/dossier/repository"
 	"dmp/entity"
 	"dmp/usager"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 //PostAntecedentAPI : api to create a new empty dmp for usager
@@ -31,12 +32,12 @@ func PostAntecedentAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-	antecedent, err := repository.AddContenuAntecedentUsagerToDossier(dossierMedical, payload, foundAgent)
+	err = repository.AddContenuAntecedentUsagerToDossier(dossierMedical, payload, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "antecedent-creation-error", "response_code": "100"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"response_content": antecedent, "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"response_content": payload, "response_code": "000"})
 }
 
 //GetAntecedentAPI : api to get usager antecedent

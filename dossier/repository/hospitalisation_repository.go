@@ -5,12 +5,13 @@ import (
 	"dmp/db"
 	"dmp/dossier"
 	"dmp/entity"
-	"go.mongodb.org/mongo-driver/bson"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // AddContenuHospitalisationUsagerToDossier :  add consultation to dosser usager
-func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedical, hospitalisationPayload dossier.NewHostpitalisationPayloadValidator, agent entity.Agent) (*dossier.Hospitalisation, error) {
+func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedical, hospitalisationPayload dossier.NewHostpitalisationPayloadValidator, agent entity.Agent) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	hospitalisationCollection := db.ConnectDb().Collection("hospitalisation")
@@ -22,7 +23,7 @@ func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedi
 		Commentaire:          hospitalisationPayload.Commentaire,
 	}
 	_, err := hospitalisationCollection.InsertOne(ctx, hospitalisation)
-	return hospitalisation, err
+	return err
 }
 
 // GetAllHospitalisationsByDossierUsager : Retreive all hospitalisations for usager

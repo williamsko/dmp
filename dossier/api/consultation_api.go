@@ -5,8 +5,9 @@ import (
 	repository "dmp/dossier/repository"
 	"dmp/entity"
 	"dmp/usager"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 //PostConsultationAPI : api to add new consultation to dossier
@@ -31,12 +32,12 @@ func PostConsultationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-	consultation, err := repository.AddContenuConsultationUsagerToDossier(dossierMedical, payload, foundAgent)
+	err = repository.AddContenuConsultationUsagerToDossier(dossierMedical, payload, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "antecedent-creation-error", "response_code": "100"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"response_content": consultation, "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"response_content": payload, "response_code": "000"})
 }
 
 //GetConsultationAPI : api to get usager consultation

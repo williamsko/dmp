@@ -27,7 +27,7 @@ func SetupRoutes() *gin.Engine {
 		usagerRouter.GET("/:matricule/dossier", dossierApi.GetDossierAPI)
 		usagerRouter.GET("/:matricule/dossier/antecedents", dossierApi.GetAntecedentAPI)
 		usagerRouter.GET("/:matricule/dossier/consultations", dossierApi.GetConsultationAPI)
-		usagerRouter.GET("/:matricule/dossier/hospitalisations", dossierApi.GetHispitalisationAPI)
+		usagerRouter.GET("/:matricule/dossier/hospitalisations", dossierApi.GetHospitalisationAPI)
 		usagerRouter.GET("/:matricule/dossier/examens", dossierApi.GetExamenAPI)
 
 		usagerRouter.PATCH("/:matricule/dossier/examen/:identifiant", dossierApi.PatchExamenAPI)

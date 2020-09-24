@@ -25,7 +25,6 @@ type NewAntecedentPayloadValidator struct {
 type NewConsultationPayloadValidator struct {
 	MotifConsultation string                            `json:"motif_consultation" binding:"required"`
 	HistoireMaladie   string                            `json:"histoire_maladie" binding:"required"`
-	Commentaire       string                            `json:"commentaire" binding:"required"`
 	Usager            usager.FindUsagerPayloadValidator `json:"usager" binding:"required"`
 	Agent             entity.AgentPayloadValidator      `json:"agent" binding:"required"`
 }

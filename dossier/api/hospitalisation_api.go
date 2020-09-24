@@ -5,8 +5,9 @@ import (
 	repository "dmp/dossier/repository"
 	"dmp/entity"
 	"dmp/usager"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 //PostHospitalisationAPI : api to add new consultation to dossier
@@ -31,16 +32,16 @@ func PostHospitalisationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-	consultation, err := repository.AddContenuHospitalisationUsagerToDossier(dossierMedical, payload, foundAgent)
+	err = repository.AddContenuHospitalisationUsagerToDossier(dossierMedical, payload, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "antecedent-creation-error", "response_code": "100"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"response_content": consultation, "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"response_content": payload, "response_code": "000"})
 }
 
-//GetHispitalisationAPI : api to get usager hospitalisation
-func GetHispitalisationAPI(c *gin.Context) {
+//GetHospitalisationAPI : api to get usager hospitalisation
+func GetHospitalisationAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
 	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
 	if err != nil {

@@ -31,12 +31,12 @@ func PostDossierAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-already-exists-for-this-usager", "response_code": "100"})
 		return
 	}
-	dossierMedical, err := repository.CreateEmptyDossier(foundUsager, foundAgent)
+	numeroDossier, err := repository.CreateEmptyDossier(foundUsager, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"response_content": dossierMedical, "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"numero_dossier": numeroDossier, "response_code": "000"})
 }
 
 //GetDossierAPI : api to create a new empty dmp for usager

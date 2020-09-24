@@ -4,6 +4,7 @@ import (
 	"context"
 	"dmp/db"
 	"dmp/dossier"
+
 	"go.mongodb.org/mongo-driver/bson"
 
 	"dmp/entity"
@@ -11,8 +12,8 @@ import (
 )
 
 // AddContenuConsultationUsagerToDossier :  add consultation to dosser usager
-func AddContenuConsultationUsagerToDossier(dossierMedical dossier.DossierMedical, 
-	consultationPayload dossier.NewConsultationPayloadValidator, agent entity.Agent) (*dossier.Consultation, error) {
+func AddContenuConsultationUsagerToDossier(dossierMedical dossier.DossierMedical,
+	consultationPayload dossier.NewConsultationPayloadValidator, agent entity.Agent) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	consultationCollection := db.ConnectDb().Collection("consultation")
@@ -22,10 +23,10 @@ func AddContenuConsultationUsagerToDossier(dossierMedical dossier.DossierMedical
 		DossierMedical:    dossierMedical.ID,
 		HistoireMaladie:   consultationPayload.HistoireMaladie,
 		MotifConsultation: consultationPayload.MotifConsultation,
-		Commentaire:       consultationPayload.Commentaire,
+		CreatedAt:         time.Now(),
 	}
 	_, err := consultationCollection.InsertOne(ctx, consultation)
-	return consultation, err
+	return err
 
 }
 
