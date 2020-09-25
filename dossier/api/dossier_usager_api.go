@@ -5,8 +5,10 @@ import (
 	repository "dmp/dossier/repository"
 	"dmp/entity"
 	"dmp/usager"
-	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 //PostDossierAPI : api to create a new empty dmp for usager
@@ -31,6 +33,7 @@ func PostDossierAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-already-exists-for-this-usager", "response_code": "100"})
 		return
 	}
+	log.Println(foundAgent)
 	numeroDossier, err := repository.CreateEmptyDossier(foundUsager, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})

@@ -34,7 +34,7 @@ func PostHospitalisationAPI(c *gin.Context) {
 	}
 	err = repository.AddContenuHospitalisationUsagerToDossier(dossierMedical, payload, foundAgent)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "antecedent-creation-error", "response_code": "100"})
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "hospitalisation-creation-error", "response_code": "100"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"response_content": payload, "response_code": "000"})

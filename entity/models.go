@@ -17,27 +17,27 @@ type EntityPayloadValidator struct {
 
 // Entity : Hospital for example
 type Entity struct {
-	ID          primitive.ObjectID `json:"_id"`
-	BrandNane   string             `json:"brand_name"`
-	Address     string             `json:"address"`
-	PhoneNumber string             `json:"phone_number"`
-	City        string             `json:"city"`
-	CreatedAt   time.Time          `json:"created_at"`
+	ID          primitive.ObjectID `bson:"_id,omitempty"`
+	BrandNane   string             `bson:"brand_name"`
+	Address     string             `bson:"address"`
+	PhoneNumber string             `bson:"phone_number"`
+	City        string             `bson:"city"`
+	CreatedAt   time.Time          `bson:"created_at"`
 }
 
 // Agent : Doctor , nurse etc ...
 type Agent struct {
-	ID          primitive.ObjectID `json:"_id"`
-	Entity      primitive.ObjectID `json:"entity"`
-	Matricule   string             `json:"matricule"`
-	FirstName   string             `json:"first_name"`
-	LastName    string             `json:"last_name"`
-	Address     string             `json:"address"`
-	PhoneNumber string             `json:"phone_number"`
-	City        string             `json:"city"`
-	Profession  string             `json:"profession"`
-	Specialite  string             `json:"specialite"`
-	CreatedAt   time.Time          `json:"created_at"`
+	ID          primitive.ObjectID `bson:"_id,omitempty"`
+	Entity      primitive.ObjectID `bson:"entity"`
+	Matricule   string             `bson:"matricule"`
+	FirstName   string             `bson:"first_name"`
+	LastName    string             `bson:"last_name"`
+	Address     string             `bson:"address"`
+	PhoneNumber string             `bson:"phone_number"`
+	City        string             `bson:"city"`
+	Profession  string             `bson:"profession"`
+	Specialite  string             `bson:"specialite"`
+	CreatedAt   time.Time          `bson:"created_at"`
 }
 
 // AgentJob : Liste des types de documents

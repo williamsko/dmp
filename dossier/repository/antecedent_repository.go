@@ -5,8 +5,9 @@ import (
 	"dmp/db"
 	"dmp/dossier"
 	"dmp/entity"
-	"go.mongodb.org/mongo-driver/bson"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // AddContenuAntecedentUsagerToDossier :  add antecedent to dosser usager
@@ -22,9 +23,10 @@ func AddContenuAntecedentUsagerToDossier(dossierMedical dossier.DossierMedical, 
 		AntecedentChirurgical: antecedentPayload.AntecedentChirurgical,
 		AntecedentFamilial:    antecedentPayload.AntecedentFamilial,
 		ModeDeVie:             antecedentPayload.ModeDeVie,
+		CreatedAt:             time.Now(),
 	}
 	_, err := antecedentCollection.InsertOne(ctx, antecedent)
-	return  err
+	return err
 }
 
 // GetAllAntecedentByDossierUsager : Retreive all antecedents for usager

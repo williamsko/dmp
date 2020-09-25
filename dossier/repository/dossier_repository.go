@@ -32,10 +32,11 @@ func CreateEmptyDossier(usager usager.Usager, agent entity.Agent) (string, error
 	dossierCollection := db.ConnectDb().Collection("dossier")
 	numberDossier := utils.GenerateRandomNumber()
 	dossierMedical := &dossier.DossierMedical{
-		Usager: usager.ID,
-		Agent:  agent.ID,
-		Entity: agent.Entity,
-		Number: numberDossier,
+		Usager:    usager.ID,
+		Agent:     agent.ID,
+		Entity:    agent.Entity,
+		Number:    numberDossier,
+		CreatedAt: time.Now(),
 	}
 	_, err := dossierCollection.InsertOne(ctx, dossierMedical)
 	return numberDossier, err

@@ -5,10 +5,11 @@ import (
 	"dmp/db"
 	"dmp/dossier"
 	"dmp/entity"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // AddContenuExamenUsagerToDossier :  add consultation to dosser usager
@@ -19,6 +20,7 @@ func AddContenuExamenUsagerToDossier(dossierMedical dossier.DossierMedical,
 	defer cancel()
 	examenCollection := db.ConnectDb().Collection("examen")
 	examen := &dossier.Examen{
+		ID:             primitive.NewObjectID(),
 		Agent:          agent.ID,
 		Entity:         agent.Entity,
 		DossierMedical: dossierMedical.ID,

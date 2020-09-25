@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // FindUsagerByPhoneNumber : Find usager
@@ -36,6 +37,7 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 	matricule := utils.GenerateRandomNumber()
 	newPerson := createPersonneaPrevenir(usager.PersonneaPrevenirValidator)
 	newUsager := &Usager{
+		
 		Matricule:             matricule,
 		FirstName:             usager.FirstName,
 		LastName:              usager.LastName,
@@ -57,6 +59,7 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 // createPersonneaPrevenir : create personne a prevenir
 func createPersonneaPrevenir(personneaPrevenir PersonneaPrevenirValidator) PersonneaPrevenir {
 	newPerson := PersonneaPrevenir{
+		ID:                 primitive.NewObjectID(),
 		FirstName:          personneaPrevenir.FirstName,
 		LastName:           personneaPrevenir.LastName,
 		Address:            personneaPrevenir.Address,

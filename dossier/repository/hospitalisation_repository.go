@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // AddContenuHospitalisationUsagerToDossier :  add consultation to dosser usager
@@ -16,11 +17,11 @@ func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedi
 	defer cancel()
 	hospitalisationCollection := db.ConnectDb().Collection("hospitalisation")
 	hospitalisation := &dossier.Hospitalisation{
+		ID:                   primitive.NewObjectID(),
 		Agent:                agent.ID,
 		Entity:               agent.Entity,
 		DossierMedical:       dossierMedical.ID,
 		MotifHospitalisation: hospitalisationPayload.MotifHospitalisation,
-		Commentaire:          hospitalisationPayload.Commentaire,
 	}
 	_, err := hospitalisationCollection.InsertOne(ctx, hospitalisation)
 	return err
