@@ -17,7 +17,6 @@ type NewAntecedentPayloadValidator struct {
 	AntecedentChirurgical string                            `json:"antecedent_chirurgical" binding:"required"`
 	AntecedentFamilial    string                            `json:"antecedent_familial" binding:"required"`
 	ModeDeVie             string                            `json:"mode_de_vie" binding:"required"`
-	Usager                usager.FindUsagerPayloadValidator `bson:"usager" binding:"required"`
 	Agent                 entity.AgentPayloadValidator      `bson:"agent" binding:"required"`
 }
 

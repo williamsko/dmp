@@ -17,7 +17,7 @@ func PostAntecedentAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	foundUsager, err := usager.FindUsagerByMatricule(payload.Usager.Matricule)
+	foundUsager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-usager", "response_code": "100"})
 		return

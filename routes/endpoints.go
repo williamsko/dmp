@@ -18,10 +18,10 @@ func SetupRoutes() *gin.Engine {
 		usagerRouter.POST("/", usager.PostUsagerAPI)
 		usagerRouter.POST("/dossier", dossierApi.PostDossierAPI)
 
-		usagerRouter.PUT("/dossier/antecedent", dossierApi.PostAntecedentAPI)
-		usagerRouter.PUT("/dossier/consultation", dossierApi.PostConsultationAPI)
-		usagerRouter.PUT("/dossier/hospitalisation", dossierApi.PostHospitalisationAPI)
-		usagerRouter.PUT("/dossier/examen", dossierApi.PostExamenAPI)
+		usagerRouter.PUT("/:matricule/dossier/antecedent", dossierApi.PostAntecedentAPI)
+		usagerRouter.PUT("/:matricule/dossier/consultation", dossierApi.PostConsultationAPI)
+		usagerRouter.PUT("/:matricule/dossier/hospitalisation", dossierApi.PostHospitalisationAPI)
+		usagerRouter.PUT("/:matricule/dossier/examen", dossierApi.PostExamenAPI)
 
 		usagerRouter.GET("/:matricule", usager.GetUsagerByMatriculeAPI)
 		usagerRouter.GET("/:matricule/dossier", dossierApi.GetDossierAPI)
