@@ -36,7 +36,7 @@ type FindUsagerPayloadValidator struct {
 
 //PostUsagerAPI : api to create a new usager
 func PostUsagerAPI(c *gin.Context) {
-	var payload NewUsagerPayloadValidator
+	var payload Usager
 	if err := c.BindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -52,7 +52,7 @@ func PostUsagerAPI(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"matricule_usager": createdUsager.Matricule, "numero_dossier_usager": "createdUsager", "response_code": "000"})
+	c.JSON(http.StatusOK, gin.H{"usager": createdUsager, "response_code": "000"})
 }
 
 //GetAllUsagerAPI : api get all usagers

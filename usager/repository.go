@@ -31,13 +31,13 @@ func FindUsagerByMatricule(matricule string) (Usager, error) {
 }
 
 // CreateNewUsager : create a new usager
-func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
+func CreateNewUsager(usager *Usager) (*Usager, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	matricule := utils.GenerateRandomNumber()
-	newPerson := createPersonneaPrevenir(usager.PersonneaPrevenirValidator)
+	newPerson := createPersonneaPrevenir(usager.PersonneaPrevenir)
 	newUsager := &Usager{
-		
+		ID:                    primitive.NewObjectID(),
 		Matricule:             matricule,
 		FirstName:             usager.FirstName,
 		LastName:              usager.LastName,
@@ -47,6 +47,7 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 		Sexe:                  usager.Sexe,
 		TypeDocument:          usager.TypeDocument,
 		SituationMatrimoniale: usager.SituationMatrimoniale,
+		DateOfBirth:           usager.DateOfBirth,
 		PersonneaPrevenir:     newPerson,
 		CreatedAt:             time.Now(),
 	}
@@ -57,7 +58,7 @@ func CreateNewUsager(usager *NewUsagerPayloadValidator) (*Usager, error) {
 }
 
 // createPersonneaPrevenir : create personne a prevenir
-func createPersonneaPrevenir(personneaPrevenir PersonneaPrevenirValidator) PersonneaPrevenir {
+func createPersonneaPrevenir(personneaPrevenir PersonneaPrevenir) PersonneaPrevenir {
 	newPerson := PersonneaPrevenir{
 		ID:                 primitive.NewObjectID(),
 		FirstName:          personneaPrevenir.FirstName,
