@@ -19,7 +19,7 @@ func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedi
 	hospitalisation := &dossier.Hospitalisation{
 		ID:                   primitive.NewObjectID(),
 		Agent:                agent.ID,
-		Entity:               agent.Entity,
+		Entity:               agent.Entity.ID,
 		DossierMedical:       dossierMedical.ID,
 		MotifHospitalisation: hospitalisationPayload.MotifHospitalisation,
 	}

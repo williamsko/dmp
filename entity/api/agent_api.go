@@ -4,7 +4,6 @@ import (
 	"dmp/entity"
 	"dmp/utils"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,26 +17,26 @@ type agentLoginPayloadValidator struct {
 func AgentLoginAPI(c *gin.Context) {
 	var payload agentLoginPayloadValidator
 	if err := c.BindJSON(&payload); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		utils.RespondWithError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	agent, err := entity.FindAgentByMatricule(payload.Matricule)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"response_content": "unkonwn-agent-matricule", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusUnauthorized, "unkonwn-agent-matricule")
 		return
 	}
 	result, err := entity.CheckAgentCredentials(agent, payload.Password)
 	if !result {
-		c.JSON(http.StatusUnauthorized, gin.H{"response_content": "unkonwn-agent-credentials", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusUnauthorized, "unkonwn-agent-credentials")
 		return
 	}
 	// Create token for the agent and sent it in the result
 	token, err := utils.CreateToken(agent.Matricule)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"response_content": "internal-error", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusInternalServerError, "authentication-token-creation-error")
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"response_content": gin.H{"token": token, "agent": agent}, "response_code": "000"})
+	utils.RespondWithSuccess(c, http.StatusOK, gin.H{"token": token, "agent": agent})
 }

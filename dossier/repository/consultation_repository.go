@@ -19,7 +19,7 @@ func AddContenuConsultationUsagerToDossier(dossierMedical dossier.DossierMedical
 	consultationCollection := db.ConnectDb().Collection("consultation")
 	consultation := &dossier.Consultation{
 		Agent:             agent.ID,
-		Entity:            agent.Entity,
+		Entity:            agent.Entity.ID,
 		DossierMedical:    dossierMedical.ID,
 		HistoireMaladie:   consultationPayload.HistoireMaladie,
 		MotifConsultation: consultationPayload.MotifConsultation,

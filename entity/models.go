@@ -18,18 +18,25 @@ type EntityPayloadValidator struct {
 
 // Entity : Hospital for example
 type Entity struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty"`
-	BrandNane   string             `bson:"brand_name"`
-	Address     string             `bson:"address"`
-	PhoneNumber string             `bson:"phone_number"`
-	City        string             `bson:"city"`
-	CreatedAt   time.Time          `bson:"created_at"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"-"`
+	BrandNane   string             `bson:"brand_name" json:"brand_name"`
+	Address     string             `bson:"address" json:"address"`
+	PhoneNumber string             `bson:"phone_number" json:"phone_number"`
+	City        string             `bson:"city" json:"city"`
+	CreatedAt   time.Time          `bson:"created_at" json:"-"`
+}
+
+// Service : Service in hospital
+type Service struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"-"`
+	BrandName string             `bson:"brand_name" json:"brand_name"`
+	CreatedAt time.Time          `bson:"created_at" json:"-"`
 }
 
 // Agent : Doctor , nurse etc ...
 type Agent struct {
-	ID             primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
-	Entity         primitive.ObjectID `bson:"entity" json:"entity"`
+	ID             primitive.ObjectID `bson:"_id,omitempty" json:"-"`
+	Entity         Entity             `bson:"entity" json:"entity"`
 	Matricule      string             `bson:"matricule" json:"matricule"`
 	Gender         string             `bson:"gender" json:"gender"`
 	FirstName      string             `bson:"first_name" json:"first_name"`
@@ -47,14 +54,6 @@ type Agent struct {
 	IDCardNumber   string             `bson:"id_card_number" json:"id_card_number"`
 	MaritalStatus  string             `bson:"marital_status" json:"marital_status"`
 	Specialite     string             `bson:"specialite" json:"specialite"`
-	Service        string             `bson:"service" json:"service"`
-	CreatedAt      time.Time          `bson:"created_at" json:"created_at"`
+	Service        Service            `bson:"service" json:"service"`
+	CreatedAt      time.Time          `bson:"created_at" json:"-"`
 }
-
-// AgentJob : Liste des types de documents
-const (
-	DOCTEUR    = "DOCTEUR"
-	INFIRMIER  = "INFIRMIER"
-	MATRONNE   = "MATRONNE"
-	SECRETAIRE = "SECRETAIRE"
-)

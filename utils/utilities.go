@@ -16,3 +16,9 @@ func GenerateRandomNumber() string {
 func RespondWithError(c *gin.Context, code int, message interface{}) {
 	c.AbortWithStatusJSON(code, gin.H{"error": message})
 }
+
+
+// RespondWithSuccess : respond api with success
+func RespondWithSuccess(c *gin.Context, code int, message interface{}) {
+	c.AbortWithStatusJSON(code, message)
+}

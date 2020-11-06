@@ -34,7 +34,7 @@ func CreateEmptyDossier(usager usager.Usager, medecinTraitant entity.Agent, agen
 	dossierMedical := &dossier.DossierMedical{
 		Usager:          usager.ID,
 		MedecinTraitant: medecinTraitant.ID,
-		Entity:          agent.Entity,
+		Entity:          agent.Entity.ID,
 		Number:          numberDossier,
 		CreatedAt:       time.Now(),
 	}

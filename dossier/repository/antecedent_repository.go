@@ -17,7 +17,7 @@ func AddContenuAntecedentUsagerToDossier(dossierMedical dossier.DossierMedical, 
 	antecedentCollection := db.ConnectDb().Collection("antecedent")
 	antecedent := &dossier.Antecedent{
 		Agent:                 agent.ID,
-		Entity:                agent.Entity,
+		Entity:                agent.Entity.ID,
 		DossierMedical:        dossierMedical.ID,
 		AntecedentMedical:     antecedentPayload.AntecedentMedical,
 		AntecedentChirurgical: antecedentPayload.AntecedentChirurgical,

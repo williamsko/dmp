@@ -22,7 +22,7 @@ func AddContenuExamenUsagerToDossier(dossierMedical dossier.DossierMedical,
 	examen := &dossier.Examen{
 		ID:             primitive.NewObjectID(),
 		Agent:          agent.ID,
-		Entity:         agent.Entity,
+		Entity:         agent.Entity.ID,
 		DossierMedical: dossierMedical.ID,
 		Type:           examenPayload.Type,
 		Statut:         calculateExamenStatut(examenPayload.Content),
