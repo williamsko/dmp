@@ -5,11 +5,6 @@ import (
 	"dmp/usager"
 )
 
-// NewDossierPayloadValidator : for validation of dossier creation API
-type NewDossierPayloadValidator struct {
-	Usager usager.FindUsagerPayloadValidator `bson:"usager" binding:"required"`
-	Agent  entity.AgentPayloadValidator      `bson:"agent" binding:"required"`
-}
 
 // NewAntecedentPayloadValidator : for validation of antecedent creation API
 type NewAntecedentPayloadValidator struct {
@@ -17,7 +12,6 @@ type NewAntecedentPayloadValidator struct {
 	AntecedentChirurgical string                            `json:"antecedent_chirurgical" binding:"required"`
 	AntecedentFamilial    string                            `json:"antecedent_familial" binding:"required"`
 	ModeDeVie             string                            `json:"mode_de_vie" binding:"required"`
-	Agent                 entity.AgentPayloadValidator      `bson:"agent" binding:"required"`
 }
 
 // NewConsultationPayloadValidator : for validation of antecedent creation API

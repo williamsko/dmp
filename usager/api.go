@@ -1,6 +1,8 @@
 package usager
 
 import (
+	"dmp/entity"
+	"dmp/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -37,13 +39,21 @@ type FindUsagerPayloadValidator struct {
 //PostUsagerAPI : api to create a new usager
 func PostUsagerAPI(c *gin.Context) {
 	var payload Usager
+	agentMatricule, _ := c.Get("agent")
 	if err := c.BindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	_, err := FindUsagerByPhoneNumber(payload.PhoneNumber)
+
+	_, err := entity.FindAgentByMatricule(agentMatricule.(string))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
+		return
+	}
+
+	_, err = FindUsagerByPhoneNumber(payload.PhoneNumber)
 	if err == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "usager-already-exists", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, "usager-already-exists")
 		return
 	}
 	createdUsager, err := CreateNewUsager(&payload)

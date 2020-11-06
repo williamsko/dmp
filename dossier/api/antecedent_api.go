@@ -13,6 +13,8 @@ import (
 //PostAntecedentAPI : api to create a new empty dmp for usager
 func PostAntecedentAPI(c *gin.Context) {
 	var payload dossier.NewAntecedentPayloadValidator
+	agentMatricule, _ := c.Get("agent")
+
 	if err := c.BindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -22,7 +24,7 @@ func PostAntecedentAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-usager", "response_code": "100"})
 		return
 	}
-	foundAgent, err := entity.FindAgentByMatricule(payload.Agent.Matricule)
+	foundAgent, err := entity.FindAgentByMatricule(agentMatricule.(string))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
 		return

@@ -8,13 +8,13 @@ import (
 
 // DossierMedical : DMP  for users
 type DossierMedical struct {
-	ID         primitive.ObjectID `bson:"_id,omitempty"`
-	Usager     primitive.ObjectID `bson:"usager"`
-	Number     string             `bson:"matricule"`
-	CreatedAt  time.Time          `bson:"created_at"`
-	LastAccess time.Time          `bson:"last_access"`
-	Agent      primitive.ObjectID `bson:"agent"`  //Agent who created the DMP
-	Entity     primitive.ObjectID `bson:"entity"` //In which entity the DMP is created
+	ID              primitive.ObjectID `bson:"_id,omitempty"`
+	Usager          primitive.ObjectID `bson:"usager"`
+	Number          string             `bson:"matricule"`
+	CreatedAt       time.Time          `bson:"created_at"`
+	LastAccess      time.Time          `bson:"last_access"`
+	MedecinTraitant primitive.ObjectID `bson:"agent"`  //Medecin in charge of the patient
+	Entity          primitive.ObjectID `bson:"entity"` //In which entity the DMP is created
 }
 
 // Examen : DMP Content

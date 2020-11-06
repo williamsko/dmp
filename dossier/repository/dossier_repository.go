@@ -26,17 +26,17 @@ func FindDossierByUsagerID(_id primitive.ObjectID) (dossier.DossierMedical, erro
 }
 
 // CreateEmptyDossier : create a new usager
-func CreateEmptyDossier(usager usager.Usager, agent entity.Agent) (string, error) {
+func CreateEmptyDossier(usager usager.Usager, medecinTraitant entity.Agent, agent entity.Agent) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	dossierCollection := db.ConnectDb().Collection("dossier")
 	numberDossier := utils.GenerateRandomNumber()
 	dossierMedical := &dossier.DossierMedical{
-		Usager:    usager.ID,
-		Agent:     agent.ID,
-		Entity:    agent.Entity,
-		Number:    numberDossier,
-		CreatedAt: time.Now(),
+		Usager:          usager.ID,
+		MedecinTraitant: medecinTraitant.ID,
+		Entity:          agent.Entity,
+		Number:          numberDossier,
+		CreatedAt:       time.Now(),
 	}
 	_, err := dossierCollection.InsertOne(ctx, dossierMedical)
 	return numberDossier, err

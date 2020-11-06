@@ -2,21 +2,40 @@ package routes
 
 import (
 	dossierApi "dmp/dossier/api"
+	agentApi "dmp/entity/api"
 	"dmp/usager"
+	"dmp/utils"
+	"net/http"
+
 	"log"
 
 	"github.com/gin-gonic/gin"
 )
+
+// TokenAuthMiddleware : token authentication middleware
+func TokenAuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		matricule := utils.ExtractTokenAuth(c.Request)
+		if matricule == "" {
+			utils.RespondWithError(c, http.StatusUnauthorized, "api-token-required-or-expired")
+			return
+		}
+		log.Print(matricule)
+		c.Set("agent",matricule)
+		c.Next()
+	}
+}
 
 // SetupRoutes : setup routes for project
 func SetupRoutes() *gin.Engine {
 
 	router := gin.Default()
 	usagerRouter := router.Group("/api/v1/usager")
+	usagerRouter.Use(TokenAuthMiddleware())
 
 	{
 		usagerRouter.POST("/", usager.PostUsagerAPI)
-		usagerRouter.POST("/dossier", dossierApi.PostDossierAPI)
+		usagerRouter.POST("/:matricule/dossier", dossierApi.PostDossierAPI)
 
 		usagerRouter.PUT("/:matricule/dossier/antecedent", dossierApi.PostAntecedentAPI)
 		usagerRouter.PUT("/:matricule/dossier/consultation", dossierApi.PostConsultationAPI)
@@ -46,6 +65,12 @@ func SetupRoutes() *gin.Engine {
 	fileDownloadRouter := router.Group("/api/v1/download")
 	{
 		fileDownloadRouter.GET("/usager/:matricule/dossier/examen/:identifiant/file", dossierApi.FileDownloadAPI)
+
+	}
+
+	agentRouter := router.Group("/api/v1/agent")
+	{
+		agentRouter.POST("/signin", agentApi.AgentLoginAPI)
 
 	}
 

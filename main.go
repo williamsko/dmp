@@ -7,6 +7,8 @@ import (
 
 func main() {
 
+	
+
 	db.ConnectDb()
 
 	router := routes.SetupRoutes()

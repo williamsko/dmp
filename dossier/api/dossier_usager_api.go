@@ -1,31 +1,46 @@
 package dossier
 
 import (
-	"dmp/dossier"
 	repository "dmp/dossier/repository"
 	"dmp/entity"
 	"dmp/usager"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
+type affectation struct {
+	MedecinTraitantMatricule  string  `json:"affectation" binding:"required"`
+}
+
 //PostDossierAPI : api to create a new empty dmp for usager
 func PostDossierAPI(c *gin.Context) {
-	var payload dossier.NewDossierPayloadValidator
+	agentMatricule, _ := c.Get("agent")
+	usagerMatricule := c.Param("matricule")
+
+	var payload affectation
 	if err := c.BindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	foundUsager, err := usager.FindUsagerByMatricule(payload.Usager.Matricule)
+
+	medecinTraitantMatricule := payload.MedecinTraitantMatricule
+	
+	foundUsager, err := usager.FindUsagerByMatricule(usagerMatricule)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-usager", "response_code": "100"})
 		return
 	}
-	foundAgent, err := entity.FindAgentByMatricule(payload.Agent.Matricule)
+	foundAgent, err := entity.FindAgentByMatricule(agentMatricule.(string))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
+		return
+	}
+
+	medecinTraitant, err := entity.FindAgentByMatricule(medecinTraitantMatricule)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-medecin-traitant", "response_code": "100"})
 		return
 	}
 	_, err = repository.FindDossierByUsagerID(foundUsager.ID)
@@ -33,8 +48,7 @@ func PostDossierAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-already-exists-for-this-usager", "response_code": "100"})
 		return
 	}
-	log.Println(foundAgent)
-	numeroDossier, err := repository.CreateEmptyDossier(foundUsager, foundAgent)
+	numeroDossier, err := repository.CreateEmptyDossier(foundUsager, medecinTraitant, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return
