@@ -44,7 +44,7 @@ func PostDossierAPI(c *gin.Context) {
 		utils.RespondWithError(c, http.StatusBadRequest, "unkonwn-medecin-traitant")
 		return
 	}
-	_, err = repository.FindDossierByUsagerID(foundUsager.ID)
+	_, err = repository.FindPatientRecordByUsagerID(foundUsager.ID)
 	if err == nil {
 		utils.RespondWithError(c, http.StatusBadRequest, "dossier-already-exists-for-this-usager")
 		return
@@ -54,15 +54,15 @@ func PostDossierAPI(c *gin.Context) {
 		utils.RespondWithError(c, http.StatusBadRequest, "dossier-creation-error")
 		return
 	}
-	utils.RespondWithSuccess(c, http.StatusOK, gin.H{"patient_medical_record_number": numeroDossier	})
+	utils.RespondWithSuccess(c, http.StatusOK, gin.H{"patient_medical_record_number": numeroDossier})
 }
 
-//GetDossierAPI : api to create a new empty dmp for usager
+//GetDossierAPI : get usager dossier and contents by giving usager matricule
 func GetDossierAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
-	patientRecord, err := repository.FindDossierByUsagerID(usager.ID)
+	patientRecord, err := repository.FindPatientRecordByUsagerID(usager.ID)
 	if err != nil {
-		utils.RespondWithError(c, http.StatusNotFound, "no-dossier-for-usager")
+		utils.RespondWithError(c, http.StatusNotFound, "no-dossier-found-for-usager")
 		return
 	}
 	// Retreive antecedents usager
@@ -80,5 +80,25 @@ func GetDossierAPI(c *gin.Context) {
 		"consultations":    consultationsUsager,
 		"examens":          examensUsager,
 		"hospitalisations": hospitalisationsUsager,
+	})
+}
+
+//SearchDossierAPI : api to create a new empty dmp for usager
+func SearchDossierAPI(c *gin.Context) {
+	patientMedicalRecordNumber := c.Query("patient_medical_record_number")
+	if len(patientMedicalRecordNumber) <= 0 {
+		utils.RespondWithError(c, http.StatusNotFound, "empty-query")
+		return
+	}
+	patientRecord, err := repository.FindPatientRecordByNumber(patientMedicalRecordNumber)
+	if err != nil {
+		utils.RespondWithError(c, http.StatusNotFound, "no-dossier-found-for-usager")
+		return
+	}
+	usager, err := usager.FindUsagerByID(patientRecord.Usager)
+
+	utils.RespondWithSuccess(c, http.StatusOK, gin.H{
+		"patient_medical_record_number": patientMedicalRecordNumber,
+		"usager":                        usager,
 	})
 }

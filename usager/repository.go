@@ -30,6 +30,17 @@ func FindUsagerByMatricule(matricule string) (Usager, error) {
 	return usager, err
 }
 
+// FindUsagerByID : Find usager by giving matricule
+func FindUsagerByID(id primitive.ObjectID) (Usager, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	var usager Usager
+	usagerCollection := db.ConnectDb().Collection("usager")
+
+	err := usagerCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&usager)
+	return usager, err
+}
+
 // CreateNewUsager : create a new usager
 func CreateNewUsager(usager *Usager) (*Usager, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

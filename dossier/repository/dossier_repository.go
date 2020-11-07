@@ -12,12 +12,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"dmp/utils"
-	"fmt"
 	"time"
 )
 
-// FindDossierByUsagerID : Find usager dossier
-func FindDossierByUsagerID(_id primitive.ObjectID) (dossier.PatientRecord, error) {
+// FindPatientRecordByUsagerID : Find usager dossier
+func FindPatientRecordByUsagerID(_id primitive.ObjectID) (dossier.PatientRecord, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	patientRecord := dossier.PatientRecord{}
@@ -32,7 +31,6 @@ func CreateEmptyPatientRecord(usager usager.Usager, medecinTraitant entity.Agent
 	defer cancel()
 	dossierCollection := db.ConnectDb().Collection("dossier")
 	numberDossier := utils.GenerateRandomNumber()
-	fmt.Print(medecinTraitant)
 	patientRecord := &dossier.PatientRecord{
 		Usager:          usager.ID,
 		MedecinTraitant: medecinTraitant.ID,
@@ -42,4 +40,14 @@ func CreateEmptyPatientRecord(usager usager.Usager, medecinTraitant entity.Agent
 	}
 	_, err := dossierCollection.InsertOne(ctx, patientRecord)
 	return numberDossier, err
+}
+
+// FindPatientRecordByNumber : Find usager dossier
+func FindPatientRecordByNumber(number string) (dossier.PatientRecord, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	patientRecord := dossier.PatientRecord{}
+	dossierCollection := db.ConnectDb().Collection("dossier")
+	err := dossierCollection.FindOne(ctx, bson.M{"patient_medical_record_number": number}).Decode(&patientRecord)
+	return patientRecord, err
 }

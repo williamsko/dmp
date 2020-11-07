@@ -21,7 +21,7 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 		log.Print(matricule)
-		c.Set("agent",matricule)
+		c.Set("agent", matricule)
 		c.Next()
 	}
 }
@@ -30,6 +30,14 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 func SetupRoutes() *gin.Engine {
 
 	router := gin.Default()
+
+	dossierRouter := router.Group("/api/v1/dossier")
+	dossierRouter.Use(TokenAuthMiddleware())
+	{
+		dossierRouter.GET("/", dossierApi.SearchDossierAPI)
+
+	}
+
 	usagerRouter := router.Group("/api/v1/usager")
 	usagerRouter.Use(TokenAuthMiddleware())
 
@@ -52,17 +60,21 @@ func SetupRoutes() *gin.Engine {
 		usagerRouter.PATCH("/:matricule/dossier/examen/:identifiant", dossierApi.PatchExamenAPI)
 	}
 	usagersRoute := router.Group("/api/v1/usagers")
+	usagersRoute.Use(TokenAuthMiddleware())
+
 	{
 		usagersRoute.GET("/", usager.GetAllUsagerAPI)
 
 	}
 
 	fileUploadRouter := router.Group("/api/v1/upload")
+	fileUploadRouter.Use(TokenAuthMiddleware())
 	{
 		fileUploadRouter.POST("/usager/:matricule/dossier/examen/:identifiant", dossierApi.FileUploadAPI)
 
 	}
 	fileDownloadRouter := router.Group("/api/v1/download")
+	fileDownloadRouter.Use(TokenAuthMiddleware())
 	{
 		fileDownloadRouter.GET("/usager/:matricule/dossier/examen/:identifiant/file", dossierApi.FileDownloadAPI)
 

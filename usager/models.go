@@ -8,7 +8,7 @@ import (
 
 // Usager : regroupe l'ensemble des patients de la plateforme
 type Usager struct {
-	ID                    primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	ID                    primitive.ObjectID `bson:"_id,omitempty" json:"-"`
 	Matricule             string             `bson:"matricule" unique:"true" json:"matricule"`
 	FirstName             string             `bson:"first_name" json:"first_name" binding:"required"`
 	LastName              string             `bson:"last_name" json:"last_name" binding:"required"`

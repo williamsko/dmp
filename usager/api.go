@@ -82,5 +82,5 @@ func GetUsagerByMatriculeAPI(c *gin.Context) {
 		utils.RespondWithError(c, http.StatusBadRequest, "unkonwn-usager")
 		return
 	}
-	utils.RespondWithSuccess(c, http.StatusOK, usager.GetUsagerEtatCivil())
+	utils.RespondWithSuccess(c, http.StatusOK, usager)
 }

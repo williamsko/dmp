@@ -57,3 +57,12 @@ type Agent struct {
 	Service        Service            `bson:"service" json:"service"`
 	CreatedAt      time.Time          `bson:"created_at" json:"-"`
 }
+
+
+// GetSimpleInformations : get usager etat civil informations
+func (a Agent) GetSimpleInformations() interface{} {
+	return map[string]string{
+		"first_name":   a.FirstName,
+		"last_name":    a.LastName,
+	}
+}

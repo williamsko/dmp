@@ -29,7 +29,7 @@ func PostAntecedentAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
 		return
 	}
-	patientRecord, err := repository.FindDossierByUsagerID(foundUsager.ID)
+	patientRecord, err := repository.FindPatientRecordByUsagerID(foundUsager.ID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
@@ -45,7 +45,7 @@ func PostAntecedentAPI(c *gin.Context) {
 //GetAntecedentAPI : api to get usager antecedent
 func GetAntecedentAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
-	patientRecord, err := repository.FindDossierByUsagerID(usager.ID)
+	patientRecord, err := repository.FindPatientRecordByUsagerID(usager.ID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
 		return
