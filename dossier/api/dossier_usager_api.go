@@ -4,13 +4,14 @@ import (
 	repository "dmp/dossier/repository"
 	"dmp/entity"
 	"dmp/usager"
+	"dmp/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type affectation struct {
-	MedecinTraitantMatricule  string  `json:"affectation" binding:"required"`
+	MedecinTraitantMatricule string `json:"affectation" binding:"required"`
 }
 
 //PostDossierAPI : api to create a new empty dmp for usager
@@ -20,66 +21,64 @@ func PostDossierAPI(c *gin.Context) {
 
 	var payload affectation
 	if err := c.BindJSON(&payload); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		utils.RespondWithError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	medecinTraitantMatricule := payload.MedecinTraitantMatricule
-	
+
 	foundUsager, err := usager.FindUsagerByMatricule(usagerMatricule)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-usager", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, "unkonwn-usager")
 		return
 	}
 	foundAgent, err := entity.FindAgentByMatricule(agentMatricule.(string))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, "unkonwn-agent")
 		return
 	}
 
 	medecinTraitant, err := entity.FindAgentByMatricule(medecinTraitantMatricule)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-medecin-traitant", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, "unkonwn-medecin-traitant")
 		return
 	}
 	_, err = repository.FindDossierByUsagerID(foundUsager.ID)
 	if err == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-already-exists-for-this-usager", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, "dossier-already-exists-for-this-usager")
 		return
 	}
-	numeroDossier, err := repository.CreateEmptyDossier(foundUsager, medecinTraitant, foundAgent)
+	numeroDossier, err := repository.CreateEmptyPatientRecord(foundUsager, medecinTraitant, foundAgent)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, "dossier-creation-error")
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"numero_dossier": numeroDossier, "response_code": "000"})
+	utils.RespondWithSuccess(c, http.StatusOK, gin.H{"patient_medical_record_number": numeroDossier	})
 }
 
 //GetDossierAPI : api to create a new empty dmp for usager
 func GetDossierAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
-	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
+	patientRecord, err := repository.FindDossierByUsagerID(usager.ID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusNotFound, "no-dossier-for-usager")
 		return
 	}
 	// Retreive antecedents usager
-	antecedentsUsager, err := repository.GetAllAntecedentByDossierUsager(&dossierMedical)
-	consultationsUsager, err := repository.GetAllConsultationsByDossierUsager(&dossierMedical)
-	hospitalisationsUsager, err := repository.GetAllHospitalisationsByDossierUsager(&dossierMedical)
-	examensUsager, err := repository.GetAllExamensByDossierUsager(&dossierMedical)
+	antecedentsUsager, err := repository.GetAllAntecedentByDossierUsager(&patientRecord)
+	consultationsUsager, err := repository.GetAllConsultationsByDossierUsager(&patientRecord)
+	hospitalisationsUsager, err := repository.GetAllHospitalisationsByDossierUsager(&patientRecord)
+	examensUsager, err := repository.GetAllExamensByDossierUsager(&patientRecord)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusInternalServerError, "dossier-creation-error")
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"response_content": gin.H{
-		"dossier":          dossierMedical,
+	utils.RespondWithSuccess(c, http.StatusOK, gin.H{
+		"dossier":          patientRecord,
 		"antecedents":      antecedentsUsager,
 		"consultations":    consultationsUsager,
 		"examens":          examensUsager,
 		"hospitalisations": hospitalisationsUsager,
-	},
-		"response_code": "000",
 	})
 }

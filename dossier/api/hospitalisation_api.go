@@ -27,12 +27,12 @@ func PostHospitalisationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
 		return
 	}
-	dossierMedical, err := repository.FindDossierByUsagerID(foundUsager.ID)
+	patientRecord, err := repository.FindDossierByUsagerID(foundUsager.ID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-	err = repository.AddContenuHospitalisationUsagerToDossier(dossierMedical, payload, foundAgent)
+	err = repository.AddContenuHospitalisationUsagerToDossier(patientRecord, payload, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "hospitalisation-creation-error", "response_code": "100"})
 		return
@@ -43,13 +43,13 @@ func PostHospitalisationAPI(c *gin.Context) {
 //GetHospitalisationAPI : api to get usager hospitalisation
 func GetHospitalisationAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
-	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
+	patientRecord, err := repository.FindDossierByUsagerID(usager.ID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
 		return
 	}
 	// Retreive antecedents usager
-	hospitalisationsUsager, err := repository.GetAllHospitalisationsByDossierUsager(&dossierMedical)
+	hospitalisationsUsager, err := repository.GetAllHospitalisationsByDossierUsager(&patientRecord)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})

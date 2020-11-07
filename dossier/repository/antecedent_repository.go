@@ -11,14 +11,14 @@ import (
 )
 
 // AddContenuAntecedentUsagerToDossier :  add antecedent to dosser usager
-func AddContenuAntecedentUsagerToDossier(dossierMedical dossier.DossierMedical, antecedentPayload dossier.NewAntecedentPayloadValidator, agent entity.Agent) error {
+func AddContenuAntecedentUsagerToDossier(patientRecord dossier.PatientRecord, antecedentPayload dossier.NewAntecedentPayloadValidator, agent entity.Agent) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	antecedentCollection := db.ConnectDb().Collection("antecedent")
 	antecedent := &dossier.Antecedent{
 		Agent:                 agent.ID,
 		Entity:                agent.Entity.ID,
-		DossierMedical:        dossierMedical.ID,
+		PatientRecord:        patientRecord.ID,
 		AntecedentMedical:     antecedentPayload.AntecedentMedical,
 		AntecedentChirurgical: antecedentPayload.AntecedentChirurgical,
 		AntecedentFamilial:    antecedentPayload.AntecedentFamilial,
@@ -30,12 +30,12 @@ func AddContenuAntecedentUsagerToDossier(dossierMedical dossier.DossierMedical, 
 }
 
 // GetAllAntecedentByDossierUsager : Retreive all antecedents for usager
-func GetAllAntecedentByDossierUsager(dossierMedical *dossier.DossierMedical) ([]dossier.Antecedent, error) {
+func GetAllAntecedentByDossierUsager(patientRecord *dossier.PatientRecord) ([]dossier.Antecedent, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var antedecentsUsager []dossier.Antecedent
 	antedecentCollection := db.ConnectDb().Collection("antecedent")
-	cursor, err := antedecentCollection.Find(ctx, bson.M{"dossier": dossierMedical.ID})
+	cursor, err := antedecentCollection.Find(ctx, bson.M{"dossier": patientRecord.ID})
 	if err = cursor.All(ctx, &antedecentsUsager); err != nil {
 		panic(err)
 	}

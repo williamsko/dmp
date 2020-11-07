@@ -12,7 +12,7 @@ import (
 )
 
 // AddContenuHospitalisationUsagerToDossier :  add consultation to dosser usager
-func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedical, hospitalisationPayload dossier.NewHostpitalisationPayloadValidator, agent entity.Agent) error {
+func AddContenuHospitalisationUsagerToDossier(patientRecord dossier.PatientRecord, hospitalisationPayload dossier.NewHostpitalisationPayloadValidator, agent entity.Agent) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	hospitalisationCollection := db.ConnectDb().Collection("hospitalisation")
@@ -20,7 +20,7 @@ func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedi
 		ID:                   primitive.NewObjectID(),
 		Agent:                agent.ID,
 		Entity:               agent.Entity.ID,
-		DossierMedical:       dossierMedical.ID,
+		PatientRecord:       patientRecord.ID,
 		MotifHospitalisation: hospitalisationPayload.MotifHospitalisation,
 	}
 	_, err := hospitalisationCollection.InsertOne(ctx, hospitalisation)
@@ -28,12 +28,12 @@ func AddContenuHospitalisationUsagerToDossier(dossierMedical dossier.DossierMedi
 }
 
 // GetAllHospitalisationsByDossierUsager : Retreive all hospitalisations for usager
-func GetAllHospitalisationsByDossierUsager(dossierMedical *dossier.DossierMedical) ([]dossier.Hospitalisation, error) {
+func GetAllHospitalisationsByDossierUsager(patientRecord *dossier.PatientRecord) ([]dossier.Hospitalisation, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var hospitalisationUsager []dossier.Hospitalisation
 	hospitalisationCollection := db.ConnectDb().Collection("consultation")
-	cursor, err := hospitalisationCollection.Find(ctx, bson.M{"dossier": dossierMedical.ID})
+	cursor, err := hospitalisationCollection.Find(ctx, bson.M{"dossier": patientRecord.ID})
 	if err = cursor.All(ctx, &hospitalisationUsager); err != nil {
 		panic(err)
 	}

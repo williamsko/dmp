@@ -44,12 +44,12 @@ func PostExamenAPI(c *gin.Context) {
 //GetExamenAPI : api to get usager examen
 func GetExamenAPI(c *gin.Context) {
 	usager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
-	dossierMedical, err := repository.FindDossierByUsagerID(usager.ID)
+	patientRecord, err := repository.FindDossierByUsagerID(usager.ID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
 		return
 	}
-	examensUsager, err := repository.GetAllExamensByDossierUsager(&dossierMedical)
+	examensUsager, err := repository.GetAllExamensByDossierUsager(&patientRecord)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return

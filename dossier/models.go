@@ -6,34 +6,34 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// DossierMedical : DMP  for users
-type DossierMedical struct {
+// PatientRecord : DMP  for users
+type PatientRecord struct {
 	ID              primitive.ObjectID `bson:"_id,omitempty"`
 	Usager          primitive.ObjectID `bson:"usager"`
 	Number          string             `bson:"matricule"`
 	CreatedAt       time.Time          `bson:"created_at"`
 	LastAccess      time.Time          `bson:"last_access"`
-	MedecinTraitant primitive.ObjectID `bson:"agent"`  //Medecin in charge of the patient
+	MedecinTraitant primitive.ObjectID `bson:"doctor"` //Medecin in charge of the patient
 	Entity          primitive.ObjectID `bson:"entity"` //In which entity the DMP is created
 }
 
 // Examen : DMP Content
 type Examen struct {
-	ID             primitive.ObjectID   `bson:"_id"`
-	DossierMedical primitive.ObjectID   `bson:"dossier"`
-	Agent          primitive.ObjectID   `bson:"agent"`
-	Entity         primitive.ObjectID   `bson:"entity"`
-	Content        []ExamenContent      `bson:"content"`
-	Files          []ExamenContentFiles `bson:"files"`
-	Statut         string               `bson:"statut"`
-	Type           string               `bson:"examen_type"`
-	CreatedAt      time.Time            `bson:"created_at"`
+	ID            primitive.ObjectID   `bson:"_id"`
+	PatientRecord primitive.ObjectID   `bson:"dossier"`
+	Agent         primitive.ObjectID   `bson:"agent"`
+	Entity        primitive.ObjectID   `bson:"entity"`
+	Content       []ExamenContent      `bson:"content"`
+	Files         []ExamenContentFiles `bson:"files"`
+	Statut        string               `bson:"statut"`
+	Type          string               `bson:"examen_type"`
+	CreatedAt     time.Time            `bson:"created_at"`
 }
 
 // Antecedent : Antecedent
 type Antecedent struct {
 	ID                    primitive.ObjectID `bson:"_id,omitempty"`
-	DossierMedical        primitive.ObjectID `bson:"dossier"`
+	PatientRecord         primitive.ObjectID `bson:"dossier"`
 	Agent                 primitive.ObjectID `bson:"agent"`
 	Entity                primitive.ObjectID `bson:"entity"`
 	AntecedentMedical     string             `bson:"antecedent_medical"`
@@ -46,7 +46,7 @@ type Antecedent struct {
 // Consultation : all consultations model
 type Consultation struct {
 	ID                primitive.ObjectID `bson:"_id,omitempty"`
-	DossierMedical    primitive.ObjectID `bson:"dossier"`
+	PatientRecord     primitive.ObjectID `bson:"dossier"`
 	Agent             primitive.ObjectID `bson:"agent"`
 	Entity            primitive.ObjectID `bson:"entity"`
 	MotifConsultation string             `bson:"motif_consultation"`
@@ -57,7 +57,7 @@ type Consultation struct {
 // Hospitalisation : all Hospitalisation model
 type Hospitalisation struct {
 	ID                   primitive.ObjectID `bson:"_id,omitempty"`
-	DossierMedical       primitive.ObjectID `bson:"dossier"`
+	PatientRecord        primitive.ObjectID `bson:"dossier"`
 	Agent                primitive.ObjectID `bson:"agent"`
 	Entity               primitive.ObjectID `bson:"entity"`
 	MotifHospitalisation string             `bson:"motif_hospitalisation"`

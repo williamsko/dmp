@@ -13,7 +13,7 @@ import (
 )
 
 // AddContenuExamenUsagerToDossier :  add consultation to dosser usager
-func AddContenuExamenUsagerToDossier(dossierMedical dossier.DossierMedical,
+func AddContenuExamenUsagerToDossier(patientRecord dossier.PatientRecord,
 	examenPayload dossier.NewExamenValidator,
 	agent entity.Agent) (*dossier.Examen, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -23,7 +23,7 @@ func AddContenuExamenUsagerToDossier(dossierMedical dossier.DossierMedical,
 		ID:             primitive.NewObjectID(),
 		Agent:          agent.ID,
 		Entity:         agent.Entity.ID,
-		DossierMedical: dossierMedical.ID,
+		PatientRecord: patientRecord.ID,
 		Type:           examenPayload.Type,
 		Statut:         calculateExamenStatut(examenPayload.Content),
 		Content:        examenPayload.Content,
@@ -33,12 +33,12 @@ func AddContenuExamenUsagerToDossier(dossierMedical dossier.DossierMedical,
 }
 
 // GetAllExamensByDossierUsager : Retreive all examens for usager
-func GetAllExamensByDossierUsager(dossierMedical *dossier.DossierMedical) ([]dossier.Examen, error) {
+func GetAllExamensByDossierUsager(patientRecord *dossier.PatientRecord) ([]dossier.Examen, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var examensUsager []dossier.Examen
 	examensCollection := db.ConnectDb().Collection("examen")
-	cursor, err := examensCollection.Find(ctx, bson.M{"dossier": dossierMedical.ID})
+	cursor, err := examensCollection.Find(ctx, bson.M{"dossier": patientRecord.ID})
 	if err = cursor.All(ctx, &examensUsager); err != nil {
 		panic(err)
 	}
