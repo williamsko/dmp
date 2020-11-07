@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// FindUsagerByPhoneNumber : Find usager
+// FindUsagerByPhoneNumber : Find usager by giving phone number
 func FindUsagerByPhoneNumber(phoneNumber string) (Usager, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -20,7 +20,7 @@ func FindUsagerByPhoneNumber(phoneNumber string) (Usager, error) {
 	return usager, err
 }
 
-// FindUsagerByMatricule : Find usager
+// FindUsagerByMatricule : Find usager by giving matricule
 func FindUsagerByMatricule(matricule string) (Usager, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

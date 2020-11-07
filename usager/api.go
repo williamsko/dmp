@@ -36,18 +36,18 @@ type FindUsagerPayloadValidator struct {
 	Matricule string `json:"matricule,omitempty" unique:"true" binding:"required"`
 }
 
-//PostUsagerAPI : api to create a new usager
+//PostUsagerAPI : API creation of new usager
 func PostUsagerAPI(c *gin.Context) {
 	var payload Usager
 	agentMatricule, _ := c.Get("agent")
 	if err := c.BindJSON(&payload); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		utils.RespondWithError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	_, err := entity.FindAgentByMatricule(agentMatricule.(string))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, "unkonwn-agent")
 		return
 	}
 
@@ -58,11 +58,11 @@ func PostUsagerAPI(c *gin.Context) {
 	}
 	createdUsager, err := CreateNewUsager(&payload)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": err.Error(), "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"usager": createdUsager, "response_code": "000"})
+	utils.RespondWithSuccess(c, http.StatusOK, gin.H{"usager": createdUsager})
 }
 
 //GetAllUsagerAPI : api get all usagers
@@ -79,8 +79,8 @@ func GetAllUsagerAPI(c *gin.Context) {
 func GetUsagerByMatriculeAPI(c *gin.Context) {
 	usager, err := FindUsagerByMatricule(c.Param("matricule"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-usager", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusBadRequest, "unkonwn-usager")
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"response_content": usager, "response_code": "000"})
+	utils.RespondWithSuccess(c, http.StatusOK, usager.GetUsagerEtatCivil())
 }

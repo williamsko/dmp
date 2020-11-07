@@ -21,7 +21,7 @@ type Usager struct {
 	Sexe                  string             `bson:"sexe" json:"sexe" binding:"required"`
 	SituationMatrimoniale string             `bson:"situation_matrimoniale" json:"situation_matrimoniale" binding:"required"`
 	PersonneaPrevenir     PersonneaPrevenir  `bson:"personne_a_prevenir" json:"personne_a_prevenir" binding:"required"`
-	CreatedAt             time.Time          `bson:"created_at" json:"created_at"`
+	CreatedAt             time.Time          `bson:"created_at" json:"-"`
 }
 
 // PersonneaPrevenir : Personne à prévenur en cas d'accident
@@ -33,5 +33,15 @@ type PersonneaPrevenir struct {
 	PhoneNumber        string             `bson:"phone_number" json:"phone_number" binding:"required"`
 	Sexe               string             `bson:"sexe" json:"sexe" binding:"required"`
 	RelationWithUsager string             `bson:"relation_with_usager" json:"relation_with_usager" binding:"required"`
-	CreatedAt          time.Time          `bson:"created_at" json:"created_at"`
+	CreatedAt          time.Time          `bson:"created_at" json:"-"`
+}
+
+// GetUsagerEtatCivil : get usager etat civil informations
+func (u Usager) GetUsagerEtatCivil() interface{} {
+	return map[string]string{
+		"first_name":   u.FirstName,
+		"last_name":    u.LastName,
+		"address":      u.Address,
+		"phone_number": u.PhoneNumber,
+	}
 }
