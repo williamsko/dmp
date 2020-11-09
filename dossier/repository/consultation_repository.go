@@ -11,16 +11,15 @@ import (
 	"time"
 )
 
-// AddContenuConsultationUsagerToDossier :  add consultation to dosser usager
-func AddContenuConsultationUsagerToDossier(patientRecord dossier.PatientRecord,
+// AddConsultationToPatientRecord :  add consultation to dosser usager
+func AddConsultationToPatientRecord(patientRecord dossier.PatientRecord,
 	consultationPayload dossier.NewConsultationPayloadValidator, agent entity.Agent) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	consultationCollection := db.ConnectDb().Collection("consultation")
 	consultation := &dossier.Consultation{
-		Agent:             agent.ID,
-		Entity:            agent.Entity.ID,
-		PatientRecord:    patientRecord.ID,
+		Agent:             agent,
+		PatientRecord:     patientRecord.ID,
 		HistoireMaladie:   consultationPayload.HistoireMaladie,
 		MotifConsultation: consultationPayload.MotifConsultation,
 		CreatedAt:         time.Now(),
@@ -30,8 +29,8 @@ func AddContenuConsultationUsagerToDossier(patientRecord dossier.PatientRecord,
 
 }
 
-// GetAllConsultationsByDossierUsager : Retreive all consultations for usager
-func GetAllConsultationsByDossierUsager(patientRecord *dossier.PatientRecord) ([]dossier.Consultation, error) {
+// GetAllConsultationsByPatientRecord : Retreive all consultations for usager
+func GetAllConsultationsByPatientRecord(patientRecord *dossier.PatientRecord) ([]dossier.Consultation, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var consultationsUsager []dossier.Consultation

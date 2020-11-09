@@ -34,7 +34,7 @@ func PostAntecedentAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-	err = repository.AddContenuAntecedentUsagerToDossier(patientRecord, payload, foundAgent)
+	err = repository.AddAntecedentToPatientRecord(patientRecord, payload, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "antecedent-creation-error", "response_code": "100"})
 		return
@@ -50,7 +50,7 @@ func GetAntecedentAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
 		return
 	}
-	antecedentsUsager, err := repository.GetAllAntecedentByDossierUsager(&patientRecord)
+	antecedentsUsager, err := repository.GetAllAntecedentByPatientRecord(&patientRecord)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return

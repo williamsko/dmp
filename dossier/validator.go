@@ -5,28 +5,23 @@ import (
 	"dmp/usager"
 )
 
-
 // NewAntecedentPayloadValidator : for validation of antecedent creation API
 type NewAntecedentPayloadValidator struct {
-	AntecedentMedical     string                            `json:"antecedent_medical" binding:"required"`
-	AntecedentChirurgical string                            `json:"antecedent_chirurgical" binding:"required"`
-	AntecedentFamilial    string                            `json:"antecedent_familial" binding:"required"`
-	ModeDeVie             string                            `json:"mode_de_vie" binding:"required"`
+	AntecedentMedical     string `json:"antecedent_medical" binding:"required"`
+	AntecedentChirurgical string `json:"antecedent_chirurgical" binding:"required"`
+	AntecedentFamilial    string `json:"antecedent_familial" binding:"required"`
+	ModeDeVie             string `json:"mode_de_vie" binding:"required"`
 }
 
 // NewConsultationPayloadValidator : for validation of antecedent creation API
 type NewConsultationPayloadValidator struct {
-	MotifConsultation string                            `json:"motif_consultation" binding:"required"`
-	HistoireMaladie   string                            `json:"histoire_maladie" binding:"required"`
-	Usager            usager.FindUsagerPayloadValidator `bson:"usager" binding:"required"`
-	Agent             entity.AgentPayloadValidator      `bson:"agent" binding:"required"`
+	MotifConsultation string                       `json:"motif_consultation" binding:"required"`
+	HistoireMaladie   string                       `json:"histoire_maladie" binding:"required"`
 }
 
 // NewHostpitalisationPayloadValidator : for validation of antecedent creation API
 type NewHostpitalisationPayloadValidator struct {
-	MotifHospitalisation string                            `json:"motif_hospitalisation" binding:"required"`
-	Usager               usager.FindUsagerPayloadValidator `bson:"usager" binding:"required"`
-	Agent                entity.AgentPayloadValidator      `bson:"agent" binding:"required"`
+	MotifHospitalisation string `json:"motif_hospitalisation" binding:"required"`
 }
 
 // ExamenContentValidator : for validation of examen creation API

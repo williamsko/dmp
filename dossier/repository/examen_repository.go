@@ -12,28 +12,28 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// AddContenuExamenUsagerToDossier :  add consultation to dosser usager
-func AddContenuExamenUsagerToDossier(patientRecord dossier.PatientRecord,
+// AddContenuExamenToPatientRecord :  add consultation to dosser usager
+func AddContenuExamenToPatientRecord(patientRecord dossier.PatientRecord,
 	examenPayload dossier.NewExamenValidator,
 	agent entity.Agent) (*dossier.Examen, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	examenCollection := db.ConnectDb().Collection("examen")
 	examen := &dossier.Examen{
-		ID:             primitive.NewObjectID(),
-		Agent:          agent.ID,
-		Entity:         agent.Entity.ID,
+		ID:            primitive.NewObjectID(),
+		Agent:         agent,
+		Entity:        agent.Entity,
 		PatientRecord: patientRecord.ID,
-		Type:           examenPayload.Type,
-		Statut:         calculateExamenStatut(examenPayload.Content),
-		Content:        examenPayload.Content,
+		Type:          examenPayload.Type,
+		Statut:        calculateExamenStatut(examenPayload.Content),
+		Content:       examenPayload.Content,
 	}
 	_, err := examenCollection.InsertOne(ctx, examen)
 	return examen, err
 }
 
-// GetAllExamensByDossierUsager : Retreive all examens for usager
-func GetAllExamensByDossierUsager(patientRecord *dossier.PatientRecord) ([]dossier.Examen, error) {
+// GetAllExamensByPatientRecord : Retreive all examens for usager
+func GetAllExamensByPatientRecord(patientRecord *dossier.PatientRecord) ([]dossier.Examen, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var examensUsager []dossier.Examen

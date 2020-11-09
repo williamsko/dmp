@@ -20,12 +20,11 @@ func FindAgentByMatricule(matricule string) (Agent, error) {
 }
 
 // FindAgentByID : Find agent by using his ID
-func FindAgentByID(id string) (Agent, error) {
+func FindAgentByID(id primitive.ObjectID) (Agent, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var agent Agent
 	agentCollection := db.ConnectDb().Collection("agent")
-	agentID, err := primitive.ObjectIDFromHex(id)
-	err = agentCollection.FindOne(ctx, bson.M{"_id": agentID}).Decode(&agent)
+	err := agentCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&agent)
 	return agent, err
 }

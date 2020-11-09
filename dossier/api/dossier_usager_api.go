@@ -66,10 +66,10 @@ func GetDossierAPI(c *gin.Context) {
 		return
 	}
 	// Retreive antecedents usager
-	antecedentsUsager, err := repository.GetAllAntecedentByDossierUsager(&patientRecord)
-	consultationsUsager, err := repository.GetAllConsultationsByDossierUsager(&patientRecord)
-	hospitalisationsUsager, err := repository.GetAllHospitalisationsByDossierUsager(&patientRecord)
-	examensUsager, err := repository.GetAllExamensByDossierUsager(&patientRecord)
+	antecedentsUsager, err := repository.GetAllAntecedentByPatientRecord(&patientRecord)
+	consultationsUsager, err := repository.GetAllConsultationsByPatientRecord(&patientRecord)
+	hospitalisationsUsager, err := repository.GetAllHospitalisationsByPatientRecord(&patientRecord)
+	examensUsager, err := repository.GetAllExamensByPatientRecord(&patientRecord)
 	if err != nil {
 		utils.RespondWithError(c, http.StatusInternalServerError, "dossier-creation-error")
 		return
@@ -96,9 +96,17 @@ func SearchDossierAPI(c *gin.Context) {
 		return
 	}
 	usager, err := usager.FindUsagerByID(patientRecord.Usager)
+	agent, err := entity.FindAgentByID(patientRecord.MedecinTraitant)
+	antecedents, err := repository.GetAllAntecedentByPatientRecord(&patientRecord)
+	consultations, err := repository.GetAllConsultationsByPatientRecord(&patientRecord)
+	hospitalisations, err := repository.GetAllHospitalisationsByPatientRecord(&patientRecord)
 
 	utils.RespondWithSuccess(c, http.StatusOK, gin.H{
 		"patient_medical_record_number": patientMedicalRecordNumber,
 		"usager":                        usager,
+		"doctor":                        agent.GetSimpleInformations(),
+		"antecedents":                   antecedents,
+		"consultations":                 consultations,
+		"hospitalisations":              hospitalisations,
 	})
 }

@@ -5,6 +5,7 @@ import (
 	repository "dmp/dossier/repository"
 	"dmp/entity"
 	"dmp/usager"
+	"dmp/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,12 +18,13 @@ func PostHospitalisationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	foundUsager, err := usager.FindUsagerByMatricule(payload.Usager.Matricule)
+	foundUsager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-usager", "response_code": "100"})
 		return
 	}
-	foundAgent, err := entity.FindAgentByMatricule(payload.Agent.Matricule)
+	agentMatricule, _ := c.Get("agent")
+	foundAgent, err := entity.FindAgentByMatricule(agentMatricule.(string))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
 		return
@@ -32,12 +34,12 @@ func PostHospitalisationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-	err = repository.AddContenuHospitalisationUsagerToDossier(patientRecord, payload, foundAgent)
+	err = repository.AddContenuHospitalisationToPatientRecord(patientRecord, payload, foundAgent)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"response_content": "hospitalisation-creation-error", "response_code": "100"})
+		utils.RespondWithError(c, http.StatusInternalServerError, "hospitalisation-creation-error")
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"response_content": payload, "response_code": "000"})
+	utils.RespondWithSuccess(c, http.StatusOK, payload)
 }
 
 //GetHospitalisationAPI : api to get usager hospitalisation
@@ -49,7 +51,7 @@ func GetHospitalisationAPI(c *gin.Context) {
 		return
 	}
 	// Retreive antecedents usager
-	hospitalisationsUsager, err := repository.GetAllHospitalisationsByDossierUsager(&patientRecord)
+	hospitalisationsUsager, err := repository.GetAllHospitalisationsByPatientRecord(&patientRecord)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})

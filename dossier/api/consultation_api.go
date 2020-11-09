@@ -17,12 +17,13 @@ func PostConsultationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	foundUsager, err := usager.FindUsagerByMatricule(payload.Usager.Matricule)
+	foundUsager, err := usager.FindUsagerByMatricule(c.Param("matricule"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-usager", "response_code": "100"})
 		return
 	}
-	foundAgent, err := entity.FindAgentByMatricule(payload.Agent.Matricule)
+	agentMatricule, _ := c.Get("agent")
+	foundAgent, err := entity.FindAgentByMatricule(agentMatricule.(string))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "unkonwn-agent", "response_code": "100"})
 		return
@@ -32,7 +33,7 @@ func PostConsultationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-	err = repository.AddContenuConsultationUsagerToDossier(patientRecord, payload, foundAgent)
+	err = repository.AddConsultationToPatientRecord(patientRecord, payload, foundAgent)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "consultation-creation-error", "response_code": "100"})
 		return
@@ -48,7 +49,7 @@ func GetConsultationAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
 		return
 	}
-	consultationsUsager, err := repository.GetAllConsultationsByDossierUsager(&patientRecord)
+	consultationsUsager, err := repository.GetAllConsultationsByPatientRecord(&patientRecord)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return

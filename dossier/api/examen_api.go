@@ -37,7 +37,7 @@ func PostExamenAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-does-not-exist", "response_code": "100"})
 		return
 	}
-	examen, err := repository.AddContenuExamenUsagerToDossier(dossier, payload, foundAgent)
+	examen, err := repository.AddContenuExamenToPatientRecord(dossier, payload, foundAgent)
 	c.JSON(http.StatusOK, gin.H{"response_content": examen, "response_code": "000"})
 }
 
@@ -49,7 +49,7 @@ func GetExamenAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "no-dossier-for-usager", "response_code": "100"})
 		return
 	}
-	examensUsager, err := repository.GetAllExamensByDossierUsager(&patientRecord)
+	examensUsager, err := repository.GetAllExamensByPatientRecord(&patientRecord)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"response_content": "dossier-creation-error", "response_code": "100"})
 		return

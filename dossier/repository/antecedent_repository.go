@@ -10,15 +10,15 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// AddContenuAntecedentUsagerToDossier :  add antecedent to dosser usager
-func AddContenuAntecedentUsagerToDossier(patientRecord dossier.PatientRecord, antecedentPayload dossier.NewAntecedentPayloadValidator, agent entity.Agent) error {
+// AddAntecedentToPatientRecord :  add antecedent to dosser usager
+func AddAntecedentToPatientRecord(patientRecord dossier.PatientRecord, antecedentPayload dossier.NewAntecedentPayloadValidator, agent entity.Agent) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	antecedentCollection := db.ConnectDb().Collection("antecedent")
 	antecedent := &dossier.Antecedent{
-		Agent:                 agent.ID,
-		Entity:                agent.Entity.ID,
-		PatientRecord:        patientRecord.ID,
+		Agent:                 agent,
+		Entity:                agent.Entity,
+		PatientRecord:         patientRecord.ID,
 		AntecedentMedical:     antecedentPayload.AntecedentMedical,
 		AntecedentChirurgical: antecedentPayload.AntecedentChirurgical,
 		AntecedentFamilial:    antecedentPayload.AntecedentFamilial,
@@ -29,8 +29,8 @@ func AddContenuAntecedentUsagerToDossier(patientRecord dossier.PatientRecord, an
 	return err
 }
 
-// GetAllAntecedentByDossierUsager : Retreive all antecedents for usager
-func GetAllAntecedentByDossierUsager(patientRecord *dossier.PatientRecord) ([]dossier.Antecedent, error) {
+// GetAllAntecedentByPatientRecord : Retreive all antecedents for usager
+func GetAllAntecedentByPatientRecord(patientRecord *dossier.PatientRecord) ([]dossier.Antecedent, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var antedecentsUsager []dossier.Antecedent
