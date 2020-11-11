@@ -1,4 +1,4 @@
-package dossier
+package record
 
 import (
 	"dmp/entity"
@@ -23,7 +23,7 @@ func AgentLoginAPI(c *gin.Context) {
 
 	agent, err := entity.FindAgentByMatricule(payload.Matricule)
 	if err != nil {
-		utils.RespondWithError(c, http.StatusUnauthorized, "unkonwn-agent-matricule")
+		utils.RespondWithError(c, http.StatusNotFound, "unkonwn-agent-matricule")
 		return
 	}
 	result, err := entity.CheckAgentCredentials(agent, payload.Password)

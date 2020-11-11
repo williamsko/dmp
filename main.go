@@ -7,12 +7,10 @@ import (
 
 func main() {
 
-	
-
 	db.ConnectDb()
 
 	router := routes.SetupRoutes()
 
-	router.Run(":9090")
+	router.Run(":9091")
 
 }
